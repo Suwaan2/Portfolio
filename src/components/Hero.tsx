@@ -1,4 +1,4 @@
-
+import myImage from './go.png'
 
 export function Hero() {
   return (
@@ -19,9 +19,9 @@ export function Hero() {
         </div>
         <div className="hidden lg:block w-1/2">
           <img
-            src="https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=1000"
+            src={myImage}
             alt="Developer illustration"
-            className="w-full h-auto max-w-md ml-auto"
+            className="w-full h-auto max-w-md ml-auto rounded-full"
           />
         </div>
       </div>
