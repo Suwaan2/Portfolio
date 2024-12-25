@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Github, Linkedin } from 'lucide-react';
 import { ContactForm } from './ContactForm';
 
@@ -20,7 +20,7 @@ export function Contact() {
         </div>
         
         <footer className="mt-20 flex justify-between items-center">
-          <p className="text-gray-400">© 2024 Kumar Deepanshu</p>
+          <p className="text-gray-400">© 2024 Suan KC</p>
           <div className="flex space-x-4">
             <a href="https://github.com" className="text-white hover:text-pink-500 transition-colors">
               <Github className="w-6 h-6" />
