@@ -1,5 +1,5 @@
 {
-  "homepage": "https://Suwaan2.github.io/project",
+  "homepage": "https://suwaan2.github.io/Portfolio",
   "name": "vite-react-typescript-starter",
   "private": true,
   "version": "0.0.0",
@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
