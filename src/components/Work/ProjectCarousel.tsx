@@ -6,10 +6,10 @@ import { ProjectNavigation } from './ProjectNavigation';
 const projects: Project[] = [
   {
     id: 1,
-    title: 'DevBlogs',
-    description: 'DevBlogs is a NextJs site, where i used to write blogs about web-development and software-development. If you want to learn something, do check this website.',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072',
-    link: '#'
+    title: 'E-commerce Cart System',
+    description: 'Mini E-commerce cart system which shows the working of the cart system. This cart system is built using Redux and React Router',
+    image: 'https://unsplash.com/photos/a-toy-shopping-cart-BQ9usyzHx_w',
+    link: 'https://ecommerce-cart-system.vercel.app/'
   },
   {
     id: 2,
