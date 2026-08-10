@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export function Contact() {
     return (
@@ -18,15 +19,15 @@ export function Contact() {
                         Looking for a dedicated developer to elevate your next project? My inbox is always open.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-6">
-                        <a 
+                        <Link 
+                            to="/contact"
                             className="px-8 md:px-10 py-4 md:py-5 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgba(129,236,255,0.3)] hover:-translate-y-1 transition-all duration-300" 
-                            href="mailto:hello@suankc.com"
                         >
                             Get In Touch
-                        </a>
+                        </Link>
                         <a 
                             className="px-8 md:px-10 py-4 md:py-5 bg-surface-container-highest text-on-surface font-bold rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:-translate-y-1 transition-all duration-300" 
-                            href="/Suan_KC_Resume.pdf"
+                            href={`${import.meta.env.BASE_URL}Suan_KC_Resume.pdf`}
                             download="Suan_KC_Resume.pdf"
                         >
                             Download CV

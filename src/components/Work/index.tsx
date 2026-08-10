@@ -32,7 +32,7 @@ export function Work() {
 
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Project 1: Large Card */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
@@ -62,7 +62,7 @@ export function Work() {
                                 <span className="px-2 py-1 text-[10px] uppercase font-bold tracking-tighter bg-primary/10 text-primary rounded">Redis</span>
                             </div>
                         </div>
-                    </motion.div>
+                    </motion.div> */}
 
                     {/* Project 2 */}
                     <motion.div

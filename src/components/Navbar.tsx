@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const resumeHref = `${import.meta.env.BASE_URL}Suan_KC_Resume.pdf`;
 
     const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -32,7 +33,7 @@ export function Navbar() {
                 </div>
                 
                 <div className="hidden md:block">
-                    <a href="/Suan_KC_Resume.pdf" download="Suan_KC_Resume.pdf" className="bg-primary text-on-primary font-bold px-6 py-2 rounded-xl scale-95 hover:scale-100 active:scale-90 transition-transform inline-block text-center cursor-pointer">Resume</a>
+                    <a href={resumeHref} download="Suan_KC_Resume.pdf" className="bg-primary text-on-primary font-bold px-6 py-2 rounded-xl scale-95 hover:scale-100 active:scale-90 transition-transform inline-block text-center cursor-pointer">Resume</a>
                 </div>
 
                 {/* Mobile Hamburger Icon */}
@@ -58,7 +59,7 @@ export function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
-                        <a href="/Suan_KC_Resume.pdf" download="Suan_KC_Resume.pdf" onClick={() => setIsOpen(false)} className="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-dim transition-colors text-center mt-4">
+                        <a href={resumeHref} download="Suan_KC_Resume.pdf" onClick={() => setIsOpen(false)} className="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-dim transition-colors text-center mt-4">
                             Resume
                         </a>
                     </div>

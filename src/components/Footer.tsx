@@ -12,7 +12,7 @@ export function Footer() {
                     <a className="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="https://github.com/Suwaan2" target="_blank">GitHub</a>
                     <a className="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="https://www.linkedin.com/in/suan-kc/" target="_blank">LinkedIn</a>
                     <a className="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="https://x.com/Suan45126923" target="_blank">Twitter</a>
-                    <a className="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="mailto:suankc22@gmail.com" target="_blank">Email</a>
+                    <a className="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="mailto:hello@suankc.com" target="_blank">Email</a>
                 </div>
             </div>
         </footer>

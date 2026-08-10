@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export function About() {
+export function About({ showInternshipCard = true }: { showInternshipCard?: boolean }) {
     return (
         <section className="py-32 bg-surface-container-low overflow-hidden" id="about">
             <div className="max-w-7xl mx-auto px-8">
@@ -37,13 +37,15 @@ export function About() {
                             <span className="text-4xl md:text-5xl font-headline font-bold text-primary mb-2">React</span>
                             <span className="text-xs md:text-sm font-label text-on-surface-variant uppercase tracking-widest">Specialization</span>
                         </motion.div>
-                        <motion.div 
-                            className="glass-card p-8 rounded-xl flex flex-col justify-center text-center col-span-2 md:col-span-1 lg:col-span-2"
-                            whileHover={{ scale: 1.02 }}
-                        >
-                            <span className="text-4xl font-headline font-bold text-primary mb-2">Internship</span>
-                            <span className="text-sm font-label text-on-surface-variant uppercase tracking-widest">Anand Marketing Tech</span>
-                        </motion.div>
+                        {showInternshipCard && (
+                            <motion.div 
+                                className="glass-card p-8 rounded-xl flex flex-col justify-center text-center col-span-2 md:col-span-1 lg:col-span-2"
+                                whileHover={{ scale: 1.02 }}
+                            >
+                                <span className="text-4xl font-headline font-bold text-primary mb-2">Internship</span>
+                                <span className="text-sm font-label text-on-surface-variant uppercase tracking-widest">Anand Marketing Tech</span>
+                            </motion.div>
+                        )}
                     </div>
                 </motion.div>
             </div>
