@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { pathname } = useLocation();
     const resumeHref = `${import.meta.env.BASE_URL}Suan_KC_Resume.pdf`;
 
     const toggleMenu = () => setIsOpen(!isOpen);
@@ -16,6 +17,8 @@ export function Navbar() {
         { path: "/contact", label: "Contact" },
     ];
 
+    const isActive = (path: string) => path === "/" ? pathname === "/" : pathname.startsWith(path);
+
     return (
         <nav className="fixed top-0 w-full z-50 bg-neutral-900/40 backdrop-blur-xl border-b border-outline-variant/10">
             <div className="flex justify-between items-center max-w-7xl mx-auto px-4 md:px-8 h-20">
@@ -26,8 +29,19 @@ export function Navbar() {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-8">
                     {links.map((link) => (
-                        <Link key={link.path} className="font-headline tracking-tight text-on-surface-variant hover:text-primary transition-all duration-300" to={link.path}>
+                        <Link
+                            key={link.path}
+                            className={`font-headline tracking-tight transition-all duration-300 relative group ${
+                                isActive(link.path) ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
+                            }`}
+                            to={link.path}
+                        >
                             {link.label}
+                            <span
+                                className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-primary transition-all duration-300 ${
+                                    isActive(link.path) ? "w-full" : "w-0 group-hover:w-full"
+                                }`}
+                            ></span>
                         </Link>
                     ))}
                 </div>
@@ -50,9 +64,11 @@ export function Navbar() {
                 <div className="md:hidden bg-surface-container-high border-b border-outline-variant/10 shadow-lg absolute w-full">
                     <div className="flex flex-col px-6 py-4 space-y-4">
                         {links.map((link) => (
-                            <Link 
-                                key={link.path} 
-                                className="font-headline tracking-tight text-on-surface-variant hover:text-primary transition-colors block text-lg" 
+                            <Link
+                                key={link.path}
+                                className={`font-headline tracking-tight transition-colors block text-lg ${
+                                    isActive(link.path) ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
+                                }`}
                                 to={link.path}
                                 onClick={() => setIsOpen(false)}
                             >

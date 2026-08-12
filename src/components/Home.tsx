@@ -12,7 +12,7 @@ export function Home() {
             
             {/* Quick summaries of the other sections */}
             <div className="border-t border-outline-variant/10">
-                <About showInternshipCard={false} />
+                <About />
             </div>
             
             <div className="border-t border-outline-variant/10">
