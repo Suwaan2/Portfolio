@@ -105,14 +105,20 @@ export function Work() {
                         whileHover={{ y: -6, transition: { type: 'spring', stiffness: 400, damping: 25 } }}
                         className="group relative bg-surface-container-high rounded-[2rem] overflow-hidden transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(129,236,255,0.1)]"
                     >
-                        <div className="h-64 relative overflow-hidden">
+                        <a
+                            href="https://video-player-platform.vercel.app/home"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="h-64 relative overflow-hidden block"
+                            aria-label="Open VideoPlatform App live site"
+                        >
                             <img
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70"
-                                alt="Video sharing platform"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPp9w2EibPpnUxzrtU6AI-UGHbX-Q5VPIoDsmhjd32xnpSl6d79YcqM9RQNVgL9VXePSyvv-dACBKqi41TMcaz9JW1YIHSeBnPE2-MxZUW7eRCT7rTAcdEMryCKvg_Y8FC-ecKc74ST-uayFC4eAjQyFwN-ZXfjznB3EY19ukWSbHQ4Z1y7447MQlXVLzocFJASN5V1fVP_YESoBqNfoWg1m0sMp4au2O0oeUmcKTvprVLzjCdTUy0U9FQkHeSvzFTYyMs5aoCBas4"
+                                alt="StreamVault video platform homepage screenshot"
+                                src={`${import.meta.env.BASE_URL}projects/video-platform.png`}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-surface-container-high to-transparent"></div>
-                        </div>
+                        </a>
                         <div className="p-8 relative">
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-2xl font-headline font-bold text-on-background">VideoPlatform App</h3>
@@ -121,11 +127,20 @@ export function Work() {
                             <p className="text-on-surface-variant font-body mb-6 text-sm md:text-base">
                                 Fullstack YouTube-style video platform with JWT auth, Cloudinary storage, Redis caching, and Docker Compose deployment.
                             </p>
-                            <div className="flex flex-wrap gap-2 mb-2">
+                            <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="px-2 py-1 text-[10px] uppercase font-bold tracking-tighter bg-primary/10 text-primary rounded">React 19</span>
                                 <span className="px-2 py-1 text-[10px] uppercase font-bold tracking-tighter bg-primary/10 text-primary rounded">Express 5</span>
                                 <span className="px-2 py-1 text-[10px] uppercase font-bold tracking-tighter bg-primary/10 text-primary rounded">Docker</span>
                             </div>
+                            <a
+                                href="https://video-player-platform.vercel.app/home"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline"
+                            >
+                                Visit Live Site
+                                <span className="material-symbols-outlined text-base">open_in_new</span>
+                            </a>
                         </div>
                     </motion.div>
 
