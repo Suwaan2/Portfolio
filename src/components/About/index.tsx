@@ -15,7 +15,7 @@ export function About() {
                         <h2 className="text-3xl font-headline font-bold text-primary mb-6">About My Journey</h2>
                         <div className="space-y-6 text-on-surface-variant leading-relaxed font-body text-lg">
                             <p>
-                                My journey began as a curious CS student at <span className="text-on-surface">Vedas College</span>, where I discovered the immense power of code to bring abstract ideas to life. This academic foundation paved the way for my role as an Intern at <span className="text-on-surface">Anand Marketing Tech</span>.
+                                My journey began as a curious CS student at <span className="text-on-surface">Vedas College</span>, where I discovered the immense power of code to bring abstract ideas to life. This academic foundation paved the way for my role as a Junior Frontend Developer at <span className="text-on-surface">Anand Marketing Tech</span>.
                             </p>
                             <p>
                                 I found my niche in the intersection of aesthetics and logic. My true passion lies in <span className="text-primary-dim">bridging the gap</span> between intricate Figma designs and high-performance, production-ready React applications.

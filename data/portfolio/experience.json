@@ -1,0 +1,15 @@
+{
+  "experience": [
+    {
+      "company": "Anand Marketing Tech",
+      "role": "Junior Frontend Developer",
+      "period": "Jan 2026 - Present",
+      "tech": "React.js, Redux Toolkit, Node.js, Express.js, JWT, Django REST, PostgreSQL, Redis, Git, Vercel",
+      "responsibilities": [
+        "Developed Ecommerce-Fashion, a live multi-vendor e-commerce platform with JWT-based MERN auth and role-based dashboards",
+        "Resolved critical deployment blockers to bring the platform to production",
+        "Mentored and onboarded 4+ incoming interns, fostering a culture of clean code and collaborative growth"
+      ]
+    }
+  ]
+}

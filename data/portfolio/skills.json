@@ -1,0 +1,55 @@
+{
+  "languages": [
+    "JavaScript (ES6+)",
+    "HTML5",
+    "CSS3",
+    "SQL",
+    "Python (scripting)"
+  ],
+  "frontend": [
+    "Next.js (App Router)",
+    "React (18/19)",
+    "Redux Toolkit",
+    "RTK Query",
+    "React Router",
+    "Vite",
+    "Tailwind CSS",
+    "Bootstrap",
+    "Axios",
+    "Responsive Design"
+  ],
+  "backend": [
+    "Node.js",
+    "Express (4/5)",
+    "JWT Authentication",
+    "RESTful APIs",
+    "Model Context Protocol (MCP)",
+    "Zod"
+  ],
+  "databases": [
+    "MongoDB",
+    "Mongoose",
+    "PostgreSQL",
+    "Prisma",
+    "Redis"
+  ],
+  "infra": [
+    "Docker & Docker Compose",
+    "BullMQ",
+    "Cloudinary",
+    "Git",
+    "GitHub",
+    "Postman",
+    "Vercel",
+    "Figma",
+    "Canva",
+    "Trello"
+  ],
+  "testing": [
+    "Vitest",
+    "Supertest",
+    "Playwright",
+    "mongodb-memory-server",
+    "Testing Library"
+  ]
+}

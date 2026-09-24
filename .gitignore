@@ -25,3 +25,8 @@ dist-ssr
 .claude
 .opencode
 .vercel
+
+# Local-only files — not needed in the repo
+ResumeSuanKC.pdf
+ASK-SUANS-AI.md
+ask_suans_ai_implementation_spec.md

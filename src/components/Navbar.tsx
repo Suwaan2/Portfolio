@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 
 export function Navbar() {
@@ -28,22 +29,27 @@ export function Navbar() {
                 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-8">
-                    {links.map((link) => (
-                        <Link
-                            key={link.path}
-                            className={`font-headline tracking-tight transition-all duration-300 relative group ${
-                                isActive(link.path) ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
-                            }`}
-                            to={link.path}
-                        >
-                            {link.label}
-                            <span
-                                className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-primary transition-all duration-300 ${
-                                    isActive(link.path) ? "w-full" : "w-0 group-hover:w-full"
+                    {links.map((link) => {
+                        const active = isActive(link.path);
+                        return (
+                            <Link
+                                key={link.path}
+                                className={`relative font-headline tracking-tight transition-colors duration-200 ${
+                                    active ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
                                 }`}
-                            ></span>
-                        </Link>
-                    ))}
+                                to={link.path}
+                            >
+                                {link.label}
+                                {active && (
+                                    <motion.span
+                                        layoutId="nav-underline"
+                                        className="absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full bg-primary"
+                                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                    />
+                                )}
+                            </Link>
+                        );
+                    })}
                 </div>
                 
                 <div className="hidden md:block">
@@ -60,27 +66,36 @@ export function Navbar() {
             </div>
 
             {/* Mobile Dropdown Menu */}
-            {isOpen && (
-                <div className="md:hidden bg-surface-container-high border-b border-outline-variant/10 shadow-lg absolute w-full">
-                    <div className="flex flex-col px-6 py-4 space-y-4">
-                        {links.map((link) => (
-                            <Link
-                                key={link.path}
-                                className={`font-headline tracking-tight transition-colors block text-lg ${
-                                    isActive(link.path) ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
-                                }`}
-                                to={link.path}
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                        <a href={resumeHref} download="Suan_KC_Resume.pdf" onClick={() => setIsOpen(false)} className="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-dim transition-colors text-center mt-4">
-                            Resume
-                        </a>
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        key="mobile-menu"
+                        className="md:hidden bg-surface-container-high border-b border-outline-variant/10 shadow-lg absolute w-full overflow-hidden"
+                        initial={{ opacity: 0, y: -12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -12 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                    >
+                        <div className="flex flex-col px-6 py-4 space-y-4">
+                            {links.map((link) => (
+                                <Link
+                                    key={link.path}
+                                    className={`font-headline tracking-tight transition-colors block text-lg ${
+                                        isActive(link.path) ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary"
+                                    }`}
+                                    to={link.path}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                            <a href={resumeHref} download="Suan_KC_Resume.pdf" onClick={() => setIsOpen(false)} className="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-dim transition-colors text-center mt-4">
+                                Resume
+                            </a>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }

@@ -1,0 +1,92 @@
+{
+  "projects": [
+    {
+      "id": "vault",
+      "name": "Vault",
+      "type": "Personal Video/Bookmark Library Platform",
+      "description": "Full-stack Next.js (App Router) platform for saving and organizing content from Instagram, TikTok, YouTube, X, and Facebook, with OpenGraph link scraping and AI-generated summaries/tags via OpenAI GPT-4o-mini.",
+      "technologies": ["Next.js 16", "TypeScript", "Prisma 7", "PostgreSQL", "NextAuth", "Tailwind CSS v4", "Zod", "OpenAI API"],
+      "features": [
+        "OpenGraph link scraping across major social platforms",
+        "AI-generated summaries and tags via OpenAI GPT-4o-mini",
+        "Prisma 7 + PostgreSQL schema and auth layer",
+        "NextAuth email/magic-link authentication",
+        "5-phase, 32-sprint delivery plan"
+      ],
+      "role": "Full-stack design and implementation",
+      "challenges": []
+    },
+    {
+      "id": "video-platform",
+      "name": "VideoPlatform App",
+      "type": "Fullstack Video Sharing Platform",
+      "description": "YouTube-style video platform (MERN) with JWT access/refresh auth, Cloudinary storage, and Redis caching across 7 models and 9 REST controllers, deployed live via Docker Compose.",
+      "technologies": ["React 19", "Redux Toolkit (RTK Query)", "Node.js", "Express 5", "MongoDB", "Redis", "Cloudinary", "JWT", "Docker"],
+      "features": [
+        "JWT access/refresh token authentication",
+        "Cloudinary media storage",
+        "Redis caching across 7 models and 9 REST controllers",
+        "RTK Query state with automatic 401 token refresh",
+        "Vitest/Supertest unit and integration test suites",
+        "Live deployment via Docker Compose"
+      ],
+      "role": "Fullstack implementation",
+      "challenges": [],
+      "links": {
+        "live": "https://video-player-platform.vercel.app"
+      }
+    },
+    {
+      "id": "momorybox",
+      "name": "MomoryBox",
+      "type": "Personalized Gift E-Commerce Platform",
+      "description": "Full-stack MERN e-commerce platform for personalized gift bundles with a guided multi-step checkout and a secondary bookable Experience Truck product line, integrating eSewa payments via custom HMAC-SHA256 verification.",
+      "technologies": ["React 18", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Prisma/PostgreSQL", "Redis", "BullMQ", "eSewa", "Docker"],
+      "features": [
+        "Guided multi-step checkout for gift bundles",
+        "Bookable Experience Truck product line",
+        "eSewa payments with custom HMAC-SHA256 verification",
+        "70+ REST endpoints across 11 routers",
+        "JWT refresh-token rotation and RBAC (user/vendor/admin)",
+        "BullMQ + Redis queues for async payment verification",
+        "Playwright E2E and Vitest testing"
+      ],
+      "role": "Fullstack implementation",
+      "challenges": []
+    },
+    {
+      "id": "pmt-frontend",
+      "name": "PMT Frontend",
+      "type": "Multi-Role Project Management SaaS",
+      "description": "Frontend for a 6-role project management SaaS platform (Client, PM, OM/CEO, Employee, Accounts, SuperAdmin) spanning ~130 routes, 114 components, and 24 Redux slices.",
+      "technologies": ["React 19", "Vite", "Redux Toolkit", "React Router v7", "Tailwind CSS", "Axios"],
+      "features": [
+        "6 user roles across ~130 routes and 114 components",
+        "24 Redux slices for state management",
+        "Cookie-based JWT auth with silent token refresh",
+        "CSRF protection and granular role/permission guards",
+        "Dynamic custom roles and permission presets"
+      ],
+      "role": "Frontend development",
+      "challenges": []
+    },
+    {
+      "id": "trello-mcp",
+      "name": "TrelloMCP",
+      "type": "Model Context Protocol Server for Trello",
+      "description": "MCP server exposing Trello as 4 callable tools (get_boards, get_cards, create_card, move_card) for AI assistants like Claude Desktop, using the official MCP SDK over stdio transport with Zod-validated schemas.",
+      "technologies": ["Node.js (ESM)", "Model Context Protocol SDK", "Zod", "Axios", "Python"],
+      "features": [
+        "4 callable Trello tools for AI assistants",
+        "Official MCP SDK over stdio transport",
+        "Zod-validated schemas",
+        "Trello-to-DOCX reporting pipeline via Python"
+      ],
+      "role": "Full implementation",
+      "challenges": [],
+      "links": {
+        "github": "https://github.com/Suwaan2/Trello_MCP"
+      }
+    }
+  ]
+}
