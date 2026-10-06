@@ -17,3 +17,7 @@ export function getGemini(): GoogleGenAI {
 export function getModelName(): string {
   return getEnv('GEMINI_MODEL') || 'gemini-flash-latest';
 }
+
+export function getFallbackModelName(): string {
+  return getEnv('GEMINI_FALLBACK_MODEL') || 'gemini-flash-lite-latest';
+}

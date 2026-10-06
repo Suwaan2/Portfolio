@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getGemini, getModelName } from '../lib/gemini.js';
+import { getGemini, getModelName, getFallbackModelName } from '../lib/gemini.js';
 import { loadKnowledge } from '../lib/knowledge.js';
 import { buildSystemPrompt } from '../lib/prompt.js';
 import { chatRequestSchema } from '../lib/validation.js';
@@ -111,16 +111,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       { role: 'user', parts: [{ text: message }] },
     ];
 
-    stream = await withRetry(() =>
+    const generate = (model: string) =>
       gemini.models.generateContentStream({
-        model: getModelName(),
+        model,
         contents,
         config: {
           systemInstruction: systemPrompt,
           maxOutputTokens: 500,
         },
-      }),
-    );
+      });
+
+    try {
+      stream = await withRetry(() => generate(getModelName()), 2);
+    } catch (err) {
+      // Primary model overloaded or rate-limited — fall back to a lighter model.
+      if (!isRetryable(err) || getFallbackModelName() === getModelName()) throw err;
+      console.warn('Ask Suan AI: primary model unavailable, using fallback', err);
+      stream = await withRetry(() => generate(getFallbackModelName()));
+    }
   } catch (err) {
     console.error('Ask Suan AI setup error:', err);
     return res.status(500).json({ success: false, error: 'Something went wrong. Please try again.' });
