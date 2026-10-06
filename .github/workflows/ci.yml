@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint, typecheck, test & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Each step tees its output into ci-logs/ so it can be uploaded if anything fails.
+      - name: Lint
+        run: mkdir -p ci-logs && npm run lint 2>&1 | tee ci-logs/lint.log
+
+      - name: Typecheck
+        run: npm run typecheck 2>&1 | tee ci-logs/typecheck.log
+
+      - name: Test
+        run: npm test 2>&1 | tee ci-logs/test.log
+
+      - name: Build
+        run: npm run build 2>&1 | tee ci-logs/build.log
+
+      - name: Upload logs (failure only)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs-${{ github.sha }}
+          path: ci-logs/
+          retention-days: 14
+
+  vercel-deployment:
+    name: Watch Vercel deployment
+    # Vercel deploys on its own through the GitHub integration; this job waits for that
+    # deployment to finish, records how long it took, and keeps the logs only if it failed.
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      statuses: read
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: suan-kcs-projects
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Wait for deployment
+        id: watch
+        run: node scripts/watch-vercel-deploy.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          LOG_FILE: deploy-logs/deployment.log
+          TIMEOUT_MINUTES: 20
+
+      # Needs a VERCEL_TOKEN repository secret; without it only the status log is kept.
+      - name: Collect Vercel build logs (failure only)
+        if: failure() && steps.watch.outputs.deployment_id != '' && env.VERCEL_TOKEN != ''
+        run: |
+          npx --yes vercel@latest inspect "${{ steps.watch.outputs.deployment_id }}" \
+            --logs --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE" \
+            > deploy-logs/vercel-build.log 2>&1 || true
+          tail -n 50 deploy-logs/vercel-build.log
+
+      - name: Upload deployment logs (failure only)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-deploy-logs-${{ github.sha }}
+          path: deploy-logs/
+          retention-days: 14
+
+      - name: Delete deployment logs (success)
+        if: success()
+        run: rm -rf deploy-logs

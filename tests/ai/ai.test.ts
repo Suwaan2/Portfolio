@@ -2,12 +2,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { classifyAiError } from '../../api/lib/errors';
 
 const generateContentStream = vi.fn();
 
 vi.mock('../../api/lib/gemini', () => ({
   getGemini: () => ({ models: { generateContentStream } }),
   getModelName: () => 'mock-model',
+  getFallbackModelName: () => 'mock-fallback',
 }));
 
 import handler from '../../api/ai/chat';
@@ -168,18 +170,51 @@ describe('POST /api/ai/chat handler', () => {
     const { res, state } = makeRes();
     await handler(makeReq(), res);
     expect(state.statusCode).toBe(500);
-    expect(state.jsonBody).toEqual({ success: false, error: expect.any(String) });
+    expect(state.jsonBody).toMatchObject({ success: false, code: 'unknown', error: expect.any(String) });
   });
 
-  it('writes an error event for an empty model response', async () => {
+  it('returns 500 when every model gives an empty response', async () => {
     generateContentStream.mockImplementation(async function* () {
       yield { candidates: [] };
     });
     const { res, state } = makeRes();
     await handler(makeReq(), res);
+    expect(state.statusCode).toBe(500);
+    expect(state.written).toEqual([]);
+  });
+
+  it('falls back to the second model when the primary is over quota', async () => {
+    generateContentStream.mockImplementation(async function* ({ model }: { model: string }) {
+      if (model === 'mock-model') throw Object.assign(new Error('quota'), { status: 400 });
+      yield chunk('From fallback.');
+    });
+    const { res, state } = makeRes();
+    await handler(makeReq(), res);
     const events = parseEvents(state.written);
-    expect(events[0].type).toBe('error');
-    expect(events[0].message).toContain('Empty response');
+    expect(events.map((e: { type: string }) => e.type)).toEqual(['chunk', 'done']);
+    expect(generateContentStream).toHaveBeenLastCalledWith(expect.objectContaining({ model: 'mock-fallback' }));
+  });
+
+  it('returns a quota message when every model is over its limit', async () => {
+    generateContentStream.mockRejectedValue(
+      Object.assign(new Error('RESOURCE_EXHAUSTED: Quota exceeded'), { status: 400 }),
+    );
+    const { res, state } = makeRes();
+    await handler(makeReq(), res);
+    expect(state.statusCode).toBe(503);
+    expect(state.jsonBody).toMatchObject({ success: false, code: 'quota', error: expect.stringMatching(/usage limit/) });
+  });
+
+  it('keeps the partial reply when the stream drops after text was sent', async () => {
+    generateContentStream.mockImplementation(async function* () {
+      yield chunk('Partial answer');
+      throw new Error('Incomplete JSON segment at the end');
+    });
+    const { res, state } = makeRes();
+    await handler(makeReq(), res);
+    const events = parseEvents(state.written);
+    expect(events.map((e: { type: string }) => e.type)).toEqual(['chunk', 'done']);
+    expect(generateContentStream).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -267,5 +302,19 @@ describe('knowledge base + prompt', () => {
       expect(typeof q.question).toBe('string');
       expect(q.question.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('classifyAiError', () => {
+  it.each([
+    [{ status: 429, message: 'Too Many Requests' }, 'quota'],
+    [{ message: 'RESOURCE_EXHAUSTED quota exceeded' }, 'quota'],
+    [{ status: 503, message: 'high demand' }, 'overloaded'],
+    [{ status: 400, message: 'API key not valid. API_KEY_INVALID' }, 'config'],
+    [new Error('GEMINI_API_KEY is not set'), 'config'],
+    [{ name: 'AbortError', message: 'aborted' }, 'timeout'],
+    [new Error('Incomplete JSON segment at the end'), 'unknown'],
+  ])('%o -> %s', (err, code) => {
+    expect(classifyAiError(err).code).toBe(code);
   });
 });

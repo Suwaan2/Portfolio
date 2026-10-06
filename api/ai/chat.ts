@@ -1,3 +1,4 @@
+import type { GoogleGenAI } from '@google/genai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getGemini, getModelName, getFallbackModelName } from '../lib/gemini.js';
 import { loadKnowledge } from '../lib/knowledge.js';
@@ -5,6 +6,7 @@ import { buildSystemPrompt } from '../lib/prompt.js';
 import { chatRequestSchema } from '../lib/validation.js';
 import { isRateLimited, rateLimitHeaders, RATE_LIMIT } from '../lib/rate-limit.js';
 import { recordAnalytics } from '../lib/analytics.js';
+import { classifyAiError } from '../lib/errors.js';
 
 function chunkText(candidate: { content?: { parts?: { text?: string }[] } } | undefined): string {
   return (candidate?.content?.parts ?? []).map((p) => p.text ?? '').join('');
@@ -96,8 +98,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('X-RateLimit-Limit', rateLimitHeaders(req)['X-RateLimit-Limit']);
   res.setHeader('X-RateLimit-Remaining', rateLimitHeaders(req)['X-RateLimit-Remaining']);
 
-  let stream;
   let knowledge;
+  let generate: (model: string) => ReturnType<GoogleGenAI['models']['generateContentStream']>;
   try {
     knowledge = loadKnowledge();
     const systemPrompt = buildSystemPrompt(knowledge);
@@ -111,7 +113,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       { role: 'user', parts: [{ text: message }] },
     ];
 
-    const generate = (model: string) =>
+    generate = (model: string) =>
       gemini.models.generateContentStream({
         model,
         contents,
@@ -120,55 +122,63 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           maxOutputTokens: 500,
         },
       });
-
-    try {
-      stream = await withRetry(() => generate(getModelName()), 2);
-    } catch (err) {
-      // Primary model overloaded or rate-limited — fall back to a lighter model.
-      if (!isRetryable(err) || getFallbackModelName() === getModelName()) throw err;
-      console.warn('Ask Suan AI: primary model unavailable, using fallback', err);
-      stream = await withRetry(() => generate(getFallbackModelName()));
-    }
   } catch (err) {
     console.error('Ask Suan AI setup error:', err);
-    return res.status(500).json({ success: false, error: 'Something went wrong. Please try again.' });
+    const info = classifyAiError(err);
+    return res.status(info.status).json({ success: false, error: info.message, code: info.code });
   }
 
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('X-Accel-Buffering', 'no');
-  res.status(200);
+  const write = (payload: object) => {
+    if (!res.headersSent) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('X-Accel-Buffering', 'no');
+      res.status(200);
+    }
+    res.write(`${JSON.stringify(payload)}
+`);
+  };
 
-  const write = (payload: object) => res.write(`${JSON.stringify(payload)}\n`);
-
+  const models = [...new Set([getModelName(), getFallbackModelName()])];
+  const refIds: string[] = [];
   const startedAt = Date.now();
-  try {
-    let receivedText = false;
-    const refIds: string[] = [];
-    for await (const chunk of stream) {
-      let text = chunkText(chunk.candidates?.[0]);
-      if (text) {
-        receivedText = true;
-        text = splitReferenceMarkers(text, refIds);
-        if (text) write({ type: 'chunk', text });
+  let receivedText = false;
+  let lastErr: unknown;
+
+  // Try each model in turn. Gemini can fail on the initial request (503/429) or drop
+  // the stream mid-response; either way, if nothing has been sent yet, move on to the
+  // next model. Once text has reached the client we keep what we have.
+  for (const model of models) {
+    try {
+      const stream = await withRetry(() => generate(model), 2);
+      for await (const chunk of stream) {
+        let text = chunkText(chunk.candidates?.[0]);
+        if (text) {
+          receivedText = true;
+          text = splitReferenceMarkers(text, refIds);
+          if (text) write({ type: 'chunk', text });
+        }
       }
+      if (receivedText) break;
+      lastErr = new Error(`Empty response from ${model}`);
+    } catch (err) {
+      lastErr = err;
+      console.warn(`Ask Suan AI: model ${model} failed`, err);
+      if (receivedText) break;
     }
-
-    const references: Reference[] = resolveReferences(refIds, knowledge);
-
-    if (!receivedText) {
-      write({ type: 'error', message: 'Empty response from model' });
-      recordAnalytics(message, { ok: false, durationMs: Date.now() - startedAt });
-    } else {
-      if (references.length > 0) write({ type: 'ref', references });
-      write({ type: 'done' });
-      recordAnalytics(message, { ok: true, durationMs: Date.now() - startedAt });
-    }
-  } catch (err) {
-    console.error('Ask Suan AI stream error:', err);
-    write({ type: 'error', message: 'Something went wrong. Please try again.' });
-    recordAnalytics(message, { ok: false, durationMs: Date.now() - startedAt });
-  } finally {
-    res.end();
   }
+
+  if (receivedText) {
+    const references: Reference[] = resolveReferences(refIds, knowledge);
+    if (references.length > 0) write({ type: 'ref', references });
+    write({ type: 'done' });
+    recordAnalytics(message, { ok: true, durationMs: Date.now() - startedAt });
+    return res.end();
+  }
+
+  console.error('Ask Suan AI: all models failed', lastErr);
+  recordAnalytics(message, { ok: false, durationMs: Date.now() - startedAt });
+  // Report the last model's failure: it is the one the visitor would have to wait on.
+  const info = classifyAiError(lastErr);
+  return res.status(info.status).json({ success: false, error: info.message, code: info.code });
 }

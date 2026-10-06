@@ -66,7 +66,8 @@ export default {
             fontFamily: {
                 "headline": ["Space Grotesk", "sans-serif"],
                 "body": ["Inter", "sans-serif"],
-                "label": ["Manrope", "sans-serif"]
+                "label": ["Manrope", "sans-serif"],
+                "mono": ["Fira Code", "ui-monospace", "monospace"]
             }
         },
     },

@@ -11,6 +11,18 @@
     background-color: theme('colors.background');
     color: theme('colors.on-background');
     font-family: theme('fontFamily.body');
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Visible keyboard focus everywhere (never removed, only restyled) */
+  :focus-visible {
+    outline: 2px solid theme('colors.primary');
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  a, button, [role='button'] {
+    cursor: pointer;
   }
 }
 
@@ -26,6 +38,55 @@
     backdrop-filter: blur(16px);
     border: 1px solid rgba(72, 72, 71, 0.15);
   }
+
+  /* Cursor-following glow; --mx/--my are fed by useSpotlight */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(129, 236, 255, 0.09), transparent 60%);
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Fine HUD grid that fades out toward the edges */
+  .hud-grid {
+    background-image:
+      linear-gradient(to right, rgba(129, 236, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(129, 236, 255, 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  }
+
+  /* Section eyebrow: "01 — About" in mono with a drawn hairline */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: theme('fontFamily.mono');
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: theme('colors.primary');
+  }
+}
+
+/* SplitText masks: extra room below the baseline so descenders (g, p, y) aren't clipped */
+.split-word-mask,
+.split-char-mask {
+  padding-bottom: 0.15em;
+  margin-bottom: -0.15em;
 }
 
 /* Native CSS scroll-driven progress bar (see ScrollProgressBar for fallback) */
@@ -59,6 +120,16 @@
 
 @keyframes glow-fade {
   to { opacity: 0; transform: scale(0.92); }
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@keyframes status-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes typing-bounce {

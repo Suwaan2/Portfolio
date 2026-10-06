@@ -1,89 +1,74 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { useScrollReveal } from '../lib/useScrollReveal';
+
+const groups = [
+    {
+        icon: 'laptop_chromebook',
+        title: 'Frontend',
+        skills: ['Next.js', 'React 18/19', 'Redux Toolkit', 'RTK Query', 'React Router', 'Vite', 'Tailwind CSS', 'Bootstrap', 'Axios', 'HTML5', 'CSS3', 'Responsive Design'],
+    },
+    {
+        icon: 'database',
+        title: 'Backend & DB',
+        skills: ['Node.js', 'Express', 'JWT', 'REST APIs', 'MCP', 'Zod', 'MongoDB', 'Mongoose', 'PostgreSQL', 'Prisma', 'Redis'],
+    },
+    {
+        icon: 'architecture',
+        title: 'Tools & Testing',
+        skills: ['Docker', 'BullMQ', 'Cloudinary', 'Git / GitHub', 'Postman', 'Vercel', 'Figma', 'Canva', 'Trello', 'Vitest', 'Playwright', 'Supertest'],
+    },
+];
 
 export function Skills() {
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.2 }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: { duration: 0.5, ease: "easeOut" as const }
-        }
-    };
+    const ref = useRef<HTMLElement>(null);
+    useScrollReveal(ref);
 
     return (
-        <section className="py-32 overflow-hidden" id="skills">
-            <div className="max-w-7xl mx-auto px-8">
-                <motion.div 
-                    className="text-center mb-20"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    <h2 className="text-4xl font-headline font-bold mb-4">Technical Arsenal</h2>
-                    <p className="text-on-surface-variant font-body">My specialized toolkit for building modern web ecosystems.</p>
-                </motion.div>
-                
-                <motion.div 
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    {/* Frontend */}
-                    <motion.div variants={cardVariants} whileHover={{ y: -8, transition: { type: 'spring', stiffness: 400, damping: 25 } }} className="glass-card p-8 rounded-xl border-t-2 border-primary/30 hover:border-primary transition-colors">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-symbols-outlined text-primary" data-icon="laptop_chromebook">laptop_chromebook</span>
-                            <h3 className="text-xl font-headline font-bold">Frontend</h3>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {['Next.js', 'React 18/19', 'Redux Toolkit', 'RTK Query', 'React Router', 'Vite', 'Tailwind CSS', 'Bootstrap', 'Axios', 'HTML5', 'CSS3', 'Responsive Design'].map(skill => (
-                                <span key={skill} className="px-3 py-1 bg-surface-container-highest rounded-lg text-xs font-label transition-all duration-150 hover:-translate-y-0.5 hover:text-primary">
-                                    {skill}
+        <section ref={ref} className="py-28 md:py-32 overflow-hidden" id="skills">
+            <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="text-center mb-16 md:mb-20 flex flex-col items-center">
+                    <div data-reveal className="eyebrow mb-6">
+                        <span>02</span>
+                        <span data-line className="h-px w-10 bg-primary/60" aria-hidden="true" />
+                        <span>Skills</span>
+                    </div>
+                    <h2 data-split className="text-4xl md:text-5xl font-headline font-bold mb-4">
+                        Technical <span className="text-primary">Arsenal</span>
+                    </h2>
+                    <p data-reveal className="text-on-surface-variant font-body">My specialized toolkit for building modern web ecosystems.</p>
+                </div>
+
+                <div data-reveal-group className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {groups.map((g, i) => (
+                        <div
+                            key={g.title}
+                            data-reveal-item
+                            className="spotlight group glass-card p-8 rounded-xl border-t-2 border-t-primary/30 transition-[border-color,transform,box-shadow] duration-300 hover:border-t-primary hover:-translate-y-2 hover:shadow-[0_24px_60px_-30px_rgba(129,236,255,0.35)]"
+                        >
+                            <div className="flex items-center justify-between mb-8">
+                                <div className="flex items-center gap-3">
+                                    <span className="material-symbols-outlined text-primary transition-transform duration-300 group-hover:rotate-[-8deg] group-hover:scale-110" aria-hidden="true">
+                                        {g.icon}
+                                    </span>
+                                    <h3 className="text-xl font-headline font-bold">{g.title}</h3>
+                                </div>
+                                <span className="font-mono text-xs text-on-surface-variant" aria-hidden="true">
+                                    {String(i + 1).padStart(2, '0')}/{String(groups.length).padStart(2, '0')}
                                 </span>
-                            ))}
+                            </div>
+                            <ul className="flex flex-wrap gap-2">
+                                {g.skills.map((skill) => (
+                                    <li
+                                        key={skill}
+                                        className="px-3 py-1 bg-surface-container-highest rounded-lg text-xs font-label border border-transparent transition-[color,border-color,transform] duration-150 hover:-translate-y-0.5 hover:text-primary hover:border-primary/30"
+                                    >
+                                        {skill}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    </motion.div>
-                    
-                    {/* Backend */}
-                    <motion.div variants={cardVariants} whileHover={{ y: -8, transition: { type: 'spring', stiffness: 400, damping: 25 } }} className="glass-card p-8 rounded-xl border-t-2 border-primary/30 hover:border-primary transition-colors">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-symbols-outlined text-primary" data-icon="database">database</span>
-                            <h3 className="text-xl font-headline font-bold">Backend & DB</h3>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {['Node.js', 'Express', 'JWT', 'REST APIs', 'MCP', 'Zod', 'MongoDB', 'Mongoose', 'PostgreSQL', 'Prisma', 'Redis'].map(skill => (
-                                <span key={skill} className="px-3 py-1 bg-surface-container-highest rounded-lg text-xs font-label transition-all duration-150 hover:-translate-y-0.5 hover:text-primary">
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
-                    </motion.div>
-                    
-                    {/* Tools */}
-                    <motion.div variants={cardVariants} whileHover={{ y: -8, transition: { type: 'spring', stiffness: 400, damping: 25 } }} className="glass-card p-8 rounded-xl border-t-2 border-primary/30 hover:border-primary transition-colors">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-symbols-outlined text-primary" data-icon="architecture">architecture</span>
-                            <h3 className="text-xl font-headline font-bold">Tools & Testing</h3>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {['Docker', 'BullMQ', 'Cloudinary', 'Git / GitHub', 'Postman', 'Vercel', 'Figma', 'Canva', 'Trello', 'Vitest', 'Playwright', 'Supertest'].map(skill => (
-                                <span key={skill} className="px-3 py-1 bg-surface-container-highest rounded-lg text-xs font-label transition-all duration-150 hover:-translate-y-0.5 hover:text-primary">
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
-                    </motion.div>
-                </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );

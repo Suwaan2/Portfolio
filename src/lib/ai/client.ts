@@ -12,8 +12,10 @@ export class ChatError extends Error {
 
 const ERROR_MESSAGES: Record<number, string> = {
   400: "That message couldn't be processed. Please try rephrasing.",
-  429: "You've reached the temporary request limit. Please try again shortly.",
+  429: "You're sending messages too quickly. Please wait a moment and try again.",
   500: "I'm having trouble connecting right now. Please try again in a moment.",
+  502: "The AI service is temporarily unreachable. Please try again in a moment.",
+  504: 'The AI service took too long to respond. Please try again.',
 };
 
 interface StreamEvent {
@@ -41,13 +43,15 @@ export async function sendChatMessage(
   }
 
   if (!res.ok) {
-    let data: { error?: string };
+    let data: { error?: string; code?: string };
     try {
       data = await res.json();
     } catch {
       data = {};
     }
-    throw new ChatError(ERROR_MESSAGES[res.status] ?? data.error ?? 'Something went wrong. Please try again.', res.status);
+    // When the server classified the failure (quota, overloaded, ...), show its message as-is.
+    const message = data.code && data.error ? data.error : ERROR_MESSAGES[res.status] ?? data.error;
+    throw new ChatError(message ?? 'Something went wrong. Please try again.', res.status);
   }
 
   if (!res.body || !onChunk) {

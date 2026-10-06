@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { useScrollReveal } from '../../lib/useScrollReveal';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
 const inputClass =
-    'w-full bg-surface-container-highest border border-outline-variant/20 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary transition-colors font-body';
+    'w-full bg-surface-container-highest border border-outline-variant/20 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant/50 transition-[border-color,box-shadow] duration-200 font-body';
 
 export function ContactPage() {
     const [status, setStatus] = useState<Status>('idle');
+    const ref = useRef<HTMLElement>(null);
+    useScrollReveal(ref);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -43,30 +45,26 @@ export function ContactPage() {
     }
 
     return (
-        <section className="py-24 md:py-32 overflow-hidden" id="contact-page">
+        <section ref={ref} className="relative py-24 md:py-32 overflow-hidden" id="contact-page">
+            <div className="hud-grid absolute inset-x-0 top-0 h-[480px] pointer-events-none" aria-hidden="true" />
             <div className="max-w-5xl mx-auto px-4 md:px-8">
-                <motion.div
-                    className="text-center mb-16"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-on-background">
+                <div className="relative text-center mb-16 flex flex-col items-center">
+                    <div data-reveal className="eyebrow mb-6">
+                        <span>Say hello</span>
+                        <span data-line className="h-px w-10 bg-primary/60" aria-hidden="true" />
+                    </div>
+                    <h2 data-split className="text-4xl md:text-5xl font-headline font-bold mb-4 text-on-background">
                         Get In <span className="text-primary">Touch</span>
                     </h2>
-                    <p className="text-lg text-on-surface-variant font-body max-w-2xl mx-auto">
+                    <p data-reveal className="text-lg text-on-surface-variant font-body max-w-2xl mx-auto">
                         Have a project in mind or just want to say hi? Fill out the form and I'll get back to you as soon as I can.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.form
+                <form
+                    data-reveal
                     onSubmit={handleSubmit}
-                    className="glass-card p-8 md:p-12 rounded-[2rem]"
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    viewport={{ once: true, amount: 0.2 }}
+                    className="spotlight relative glass-card p-8 md:p-12 rounded-[2rem]"
                 >
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -108,23 +106,31 @@ export function ContactPage() {
                         <button
                             type="submit"
                             disabled={status === 'sending'}
-                            className="w-full md:w-auto px-10 py-4 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgba(129,236,255,0.3)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                            className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgba(129,236,255,0.3)] hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] transition-[box-shadow,transform] duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
                         >
+                            {status === 'sending' && (
+                                <span className="h-4 w-4 rounded-full border-2 border-on-primary/30 border-t-on-primary animate-spin" aria-hidden="true" />
+                            )}
+                            {status === 'success' && <span className="material-symbols-outlined text-xl" aria-hidden="true">check_circle</span>}
                             {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent' : 'Send Message'}
                         </button>
                     </div>
 
-                    {status === 'success' && (
-                        <p className="mt-6 text-primary font-body font-semibold">
-                            Thanks for reaching out! Your message has been sent and I'll reply soon.
-                        </p>
-                    )}
-                    {status === 'error' && (
-                        <p className="mt-6 text-error font-body font-semibold">
-                            Something went wrong while sending your message. Please try again or email me directly at suankc22@gmail.com.
-                        </p>
-                    )}
-                </motion.form>
+                    <div role="status" aria-live="polite">
+                        {status === 'success' && (
+                            <p className="mt-6 flex items-start gap-2 text-primary font-body font-semibold animate-[status-in_300ms_ease-out]">
+                                <span className="material-symbols-outlined" aria-hidden="true">mark_email_read</span>
+                                Thanks for reaching out! Your message has been sent and I'll reply soon.
+                            </p>
+                        )}
+                        {status === 'error' && (
+                            <p className="mt-6 flex items-start gap-2 text-error font-body font-semibold animate-[status-in_300ms_ease-out]">
+                                <span className="material-symbols-outlined" aria-hidden="true">error</span>
+                                Something went wrong while sending your message. Please try again or email me directly at suankc22@gmail.com.
+                            </p>
+                        )}
+                    </div>
+                </form>
             </div>
         </section>
     );

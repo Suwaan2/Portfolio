@@ -12,9 +12,12 @@ import { ContactPage } from './components/Contact/ContactPage';
 import { Footer } from './components/Footer';
 import { AskSuanAI } from './components/ai/AskSuanAI';
 import { Preloader } from './components/Preloader';
+import { ScrollTrigger } from './lib/gsap';
+import { useSpotlight } from './lib/useSpotlight';
 
 function App() {
   const location = useLocation();
+  useSpotlight();
 
   return (
     <MotionConfig reducedMotion="user">
@@ -29,8 +32,10 @@ function App() {
               key={location.pathname}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12, transition: { duration: 0.2, ease: [0.3, 0, 1, 1] } }}
+              transition={{ duration: 0.4, ease: [0.05, 0.7, 0.1, 1] }}
+              // trigger positions were measured mid-transition; re-measure once the page settles
+              onAnimationComplete={() => ScrollTrigger.refresh()}
             >
               <Routes location={location}>
                 <Route path="/" element={<Home />} />
