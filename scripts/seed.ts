@@ -2,7 +2,7 @@
 //   npm run seed           only adds sections the database doesn't have yet
 //   npm run seed -- --force  overwrites every section with the file copy
 import { SECTION_KEYS } from '../shared/schema.js';
-import { loadContent } from '../api/lib/knowledge.js';
+import { loadContent } from '../server/knowledge.js';
 import { getDb, closeDb } from '../server/db.js';
 import { CONTENT_COLLECTION, type ContentDoc } from '../server/content-store.js';
 

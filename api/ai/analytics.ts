@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAnalytics } from '../lib/analytics.js';
-import { getEnv } from '../lib/env.js';
+import { getAnalytics } from '../../server/analytics.js';
+import { getEnv } from '../../server/env.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {

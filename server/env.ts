@@ -9,8 +9,8 @@ function loadEnvFile(): Record<string, string> {
 
   const moduleRoot = dirname(fileURLToPath(import.meta.url));
   const projectRoot =
-    [join(moduleRoot, '..', '..'), process.cwd()].find((p) => existsSync(join(p, '.env.local')) || existsSync(join(p, '.env'))) ??
-    join(moduleRoot, '..', '..');
+    [join(moduleRoot, '..'), process.cwd()].find((p) => existsSync(join(p, '.env.local')) || existsSync(join(p, '.env'))) ??
+    join(moduleRoot, '..');
   const parsed: Record<string, string> = {};
 
   for (const file of ['.env.local', '.env']) {

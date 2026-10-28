@@ -1,6 +1,6 @@
 import { setServers } from 'node:dns';
 import { MongoClient, type Db } from 'mongodb';
-import { getEnv } from '../api/lib/env.js';
+import { getEnv } from './env.js';
 
 // Server-side helpers live outside /api so Vercel doesn't count them as functions.
 

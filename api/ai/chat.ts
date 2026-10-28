@@ -1,13 +1,13 @@
 import type { GoogleGenAI } from '@google/genai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getGemini, getModelName, getFallbackModelName } from '../lib/gemini.js';
-import { toKnowledge, type PortfolioKnowledge } from '../lib/knowledge.js';
+import { getGemini, getModelName, getFallbackModelName } from '../../server/gemini.js';
+import { toKnowledge, type PortfolioKnowledge } from '../../server/knowledge.js';
 import { getContent } from '../../server/content-store.js';
-import { buildSystemPrompt } from '../lib/prompt.js';
-import { chatRequestSchema } from '../lib/validation.js';
-import { isRateLimited, rateLimitHeaders, RATE_LIMIT } from '../lib/rate-limit.js';
-import { recordAnalytics } from '../lib/analytics.js';
-import { classifyAiError } from '../lib/errors.js';
+import { buildSystemPrompt } from '../../server/prompt.js';
+import { chatRequestSchema } from '../../server/validation.js';
+import { isRateLimited, rateLimitHeaders, RATE_LIMIT } from '../../server/rate-limit.js';
+import { recordAnalytics } from '../../server/analytics.js';
+import { classifyAiError } from '../../server/errors.js';
 
 function chunkText(candidate: { content?: { parts?: { text?: string }[] } } | undefined): string {
   return (candidate?.content?.parts ?? []).map((p) => p.text ?? '').join('');

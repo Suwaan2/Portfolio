@@ -1,15 +1,14 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { sectionSchemas, SECTION_KEYS, type Content, type Project as ContentProject } from '../../shared/schema.js';
-import { stripMarkup } from '../../shared/markup.js';
+import { sectionSchemas, SECTION_KEYS, type Content, type Project as ContentProject } from '../shared/schema.js';
+import { stripMarkup } from '../shared/markup.js';
 
-const API_DIR = dirname(fileURLToPath(import.meta.url));
-const CWD_DIR = join(process.cwd(), 'api', 'lib');
+const SERVER_DIR = dirname(fileURLToPath(import.meta.url));
 
-const DATA_DIR = [join(API_DIR, '..', '..', 'data', 'portfolio'), join(CWD_DIR, '..', '..', 'data', 'portfolio')].find(
+const DATA_DIR = [join(SERVER_DIR, '..', 'data', 'portfolio'), join(process.cwd(), 'data', 'portfolio')].find(
   (p) => existsSync(p),
-) ?? join(API_DIR, '..', '..', 'data', 'portfolio');
+) ?? join(SERVER_DIR, '..', 'data', 'portfolio');
 
 function loadSection<K extends keyof Content>(key: K): Content[K] {
   const raw = JSON.parse(readFileSync(join(DATA_DIR, `${key}.json`), 'utf-8'));

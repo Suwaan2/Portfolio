@@ -1,5 +1,8 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.ts": { "includeFiles": "data/portfolio/**" }
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { classifyAiError } from '../../api/lib/errors';
+import { classifyAiError } from '../../server/errors';
 
 const generateContentStream = vi.fn();
 
-vi.mock('../../api/lib/gemini', () => ({
+vi.mock('../../server/gemini', () => ({
   getGemini: () => ({ models: { generateContentStream } }),
   getModelName: () => 'mock-model',
   getFallbackModelName: () => 'mock-fallback',
@@ -16,11 +16,11 @@ vi.mock('../../api/lib/gemini', () => ({
 vi.mock('../../server/db', () => ({ getDb: async () => null }));
 
 import handler from '../../api/ai/chat';
-import { chatRequestSchema } from '../../api/lib/validation';
-import { isRateLimited, resetRateLimits } from '../../api/lib/rate-limit';
-import { loadKnowledge } from '../../api/lib/knowledge';
-import { buildSystemPrompt } from '../../api/lib/prompt';
-import { detectTopic, recordAnalytics, getAnalytics, resetAnalytics } from '../../api/lib/analytics';
+import { chatRequestSchema } from '../../server/validation';
+import { isRateLimited, resetRateLimits } from '../../server/rate-limit';
+import { loadKnowledge } from '../../server/knowledge';
+import { buildSystemPrompt } from '../../server/prompt';
+import { detectTopic, recordAnalytics, getAnalytics, resetAnalytics } from '../../server/analytics';
 
 function chunk(text: string) {
   return { candidates: [{ content: { parts: [{ text }] } }] };

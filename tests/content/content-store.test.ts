@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { loadContent } from '../../api/lib/knowledge';
+import { loadContent } from '../../server/knowledge';
 
 const getDb = vi.fn();
 vi.mock('../../server/db', () => ({ getDb: () => getDb() }));

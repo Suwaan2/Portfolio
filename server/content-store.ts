@@ -1,5 +1,5 @@
 import { sectionSchemas, SECTION_KEYS, type Content, type SectionKey } from '../shared/schema.js';
-import { loadContent as loadFileContent } from '../api/lib/knowledge.js';
+import { loadContent as loadFileContent } from './knowledge.js';
 import { getDb } from './db.js';
 
 // One document per section: { _id: 'projects', data: {...}, version: 3, updatedAt }

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { loadContent, loadKnowledge } from '../../api/lib/knowledge';
+import { loadContent, loadKnowledge } from '../../server/knowledge';
 import { contentSchema } from '../../shared/schema';
 import { parseMarkup, stripMarkup } from '../../shared/markup';
 import { bundledContent } from '../../src/lib/content';
