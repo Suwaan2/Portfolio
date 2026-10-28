@@ -73,7 +73,7 @@ export function Work() {
     }
 
     return (
-        <section ref={ref} className="py-28 md:py-32 bg-surface-container-lowest overflow-hidden" id="projects">
+        <section ref={ref} className="py-28 md:py-32 bg-surface-container-low section-glow overflow-hidden" id="projects">
             <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="flex flex-col md:flex-row justify-between md:items-end mb-16 gap-6">
                     <div>
@@ -127,7 +127,7 @@ export function Work() {
                                 ref={(el) => { cardRefs.current[i] = el; }}
                                 data-reveal-item
                                 className={`spotlight group relative bg-surface-container-high rounded-[2rem] overflow-hidden border transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-1.5 hover:shadow-[0_0_40px_rgba(129,236,255,0.12)] ${
-                                    activeIndex === i ? 'border-primary/30' : 'border-outline-variant/10'
+                                    activeIndex === i ? 'border-primary/30' : 'border-outline-variant/30'
                                 }`}
                             >
                                 {p.href ? (

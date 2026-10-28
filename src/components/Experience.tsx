@@ -29,7 +29,7 @@ export function Experience() {
     useScrollReveal(ref);
 
     return (
-        <section ref={ref} className="py-28 md:py-32 overflow-hidden" id="experience">
+        <section ref={ref} className="py-28 md:py-32 section-glow overflow-hidden" id="experience">
             <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="mb-16 flex flex-col items-center text-center">
                     <div data-reveal className="eyebrow mb-6">

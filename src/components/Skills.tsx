@@ -24,7 +24,7 @@ export function Skills() {
     useScrollReveal(ref);
 
     return (
-        <section ref={ref} className="py-28 md:py-32 overflow-hidden" id="skills">
+        <section ref={ref} className="py-28 md:py-32 section-glow overflow-hidden" id="skills">
             <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="text-center mb-16 md:mb-20 flex flex-col items-center">
                     <div data-reveal className="eyebrow mb-6">

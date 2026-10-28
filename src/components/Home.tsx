@@ -11,23 +11,23 @@ export function Home() {
             <Hero />
             
             {/* Quick summaries of the other sections */}
-            <div className="border-t border-outline-variant/10">
+            <div className="border-t border-outline-variant/20">
                 <About />
             </div>
             
-            <div className="border-t border-outline-variant/10">
+            <div className="border-t border-outline-variant/20">
                 <Skills />
             </div>
             
-            <div className="border-t border-outline-variant/10">
+            <div className="border-t border-outline-variant/20">
                 <Work />
             </div>
 
-            <div className="border-t border-outline-variant/10">
+            <div className="border-t border-outline-variant/20">
                 <Experience />
             </div>
             
-            <div className="border-t border-outline-variant/10">
+            <div className="border-t border-outline-variant/20">
                 <Contact />
             </div>
         </div>

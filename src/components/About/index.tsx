@@ -39,7 +39,7 @@ export function About() {
     );
 
     return (
-        <section ref={ref} className="py-28 md:py-32 bg-surface-container-low overflow-hidden" id="about">
+        <section ref={ref} className="py-28 md:py-32 bg-surface-container-low section-glow overflow-hidden" id="about">
             <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="grid lg:grid-cols-12 gap-16 items-start">
                     <div className="lg:col-span-5">
