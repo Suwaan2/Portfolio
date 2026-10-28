@@ -31,8 +31,8 @@
         "Prisma",
         "OpenAI"
       ],
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd",
-      "imageAlt": "Vault bookmark library platform"
+      "image": "/projects/vault.svg",
+      "imageAlt": "Vault library with saved videos from Instagram, TikTok and YouTube and an AI-generated summary card"
     },
     {
       "id": "video-platform",
@@ -70,8 +70,8 @@
         "Express 5",
         "Docker"
       ],
-      "image": "/projects/video-platform.png",
-      "imageAlt": "StreamVault video platform homepage screenshot"
+      "image": "/projects/video-platform.svg",
+      "imageAlt": "StreamVault video player with an up-next list, subscribe button and the JWT, Redis and Cloudinary stack"
     },
     {
       "id": "momorybox",
@@ -108,8 +108,8 @@
         "eSewa",
         "BullMQ"
       ],
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCY5hO_M7IDbpAbj_SjHQ7bHccSXQACykadDVIWo4uOesggIUg1gjdSHQ7sDAf2ghF1BX6Al_my3zlBY3FNyEMgFCQWsw3ZfBuZg0OKDQqaS9sfHfhgxVgkjfMQeG2WtUM5NdrkCUNV5z67CUT-6hB0uU5CF40E2YhBkqFRcqeOCXEBDPE1t-2OvQJ1RMlaBgJpUoZAE1_cXJALOempGaLPqPshi0jVM6rBy9k-w7TMMCo5H8W2mQMKIjCBZNmYqvmarl7W7a85W0D1",
-      "imageAlt": "MomoryBox gift e-commerce platform"
+      "image": "/projects/momorybox.svg",
+      "imageAlt": "MomoryBox checkout with a gift box, order summary and an eSewa payment button"
     },
     {
       "id": "pmt-frontend",
@@ -140,8 +140,8 @@
         "Redux Toolkit",
         "Vite"
       ],
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd",
-      "imageAlt": "Project management SaaS dashboard"
+      "image": "/projects/pmt-frontend.svg",
+      "imageAlt": "PMT dashboard with project stats, a velocity chart, task statuses and the six user roles"
     },
     {
       "id": "trello-mcp",
@@ -173,8 +173,8 @@
         "Node.js",
         "Zod"
       ],
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAPp9w2EibPpnUxzrtU6AI-UGHbX-Q5VPIoDsmhjd32xnpSl6d79YcqM9RQNVgL9VXePSyvv-dACBKqi41TMcaz9JW1YIHSeBnPE2-MxZUW7eRCT7rTAcdEMryCKvg_Y8FC-ecKc74ST-uayFC4eAjQyFwN-ZXfjznB3EY19ukWSbHQ4Z1y7447MQlXVLzocFJASN5V1fVP_YESoBqNfoWg1m0sMp4au2O0oeUmcKTvprVLzjCdTUy0U9FQkHeSvzFTYyMs5aoCBas4",
-      "imageAlt": "Trello MCP server"
+      "image": "/projects/trello-mcp.svg",
+      "imageAlt": "Terminal running TrelloMCP tool calls that move a card across a Trello board"
     }
   ]
 }

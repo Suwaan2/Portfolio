@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <radialGradient id="glow" cx="0.3" cy="0.25" r="0.75">
+      <stop offset="0" stop-color="#81ecff" stop-opacity="0.2"/>
+      <stop offset="0.6" stop-color="#70aaff" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#0e0e0e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#81ecff" stroke-opacity="0.05"/>
+    </pattern>
+    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#70aaff"/><stop offset="1" stop-color="#2b5ea8"/></linearGradient>
+    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc0ff"/><stop offset="1" stop-color="#5c9ffc"/></linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="#0e0e0e"/>
+  <rect width="1200" height="750" fill="url(#grid)"/>
+  <rect width="1200" height="750" fill="url(#glow)"/>
+
+  <g transform="translate(150 110)">
+    <rect width="900" height="560" rx="22" fill="#141517" stroke="#2a2b2e" stroke-width="2"/>
+    <circle cx="30" cy="30" r="6" fill="#ff6b6b" fill-opacity="0.7"/><circle cx="50" cy="30" r="6" fill="#ffd166" fill-opacity="0.7"/><circle cx="70" cy="30" r="6" fill="#81ecff" fill-opacity="0.7"/>
+    <text x="110" y="36" fill="#ffffff" font-size="16" font-weight="800">Momory<tspan fill="#81ecff">Box</tspan></text>
+    <line x1="0" y1="60" x2="900" y2="60" stroke="#2a2b2e" stroke-width="2"/>
+
+    <!-- Checkout stepper -->
+    <g transform="translate(60 92)" font-size="13" font-weight="700">
+      <line x1="18" y1="18" x2="760" y2="18" stroke="#2a2b2e" stroke-width="4"/>
+      <line x1="18" y1="18" x2="400" y2="18" stroke="#81ecff" stroke-width="4"/>
+      <circle cx="18" cy="18" r="18" fill="#81ecff"/><path d="M10 18 l6 6 l11 -12" fill="none" stroke="#003840" stroke-width="3.5"/>
+      <text x="18" y="58" fill="#81ecff" text-anchor="middle">Choose box</text>
+      <circle cx="270" cy="18" r="18" fill="#81ecff"/><path d="M262 18 l6 6 l11 -12" fill="none" stroke="#003840" stroke-width="3.5"/>
+      <text x="270" y="58" fill="#81ecff" text-anchor="middle">Personalize</text>
+      <circle cx="520" cy="18" r="18" fill="#141517" stroke="#81ecff" stroke-width="3"/><text x="520" y="23" fill="#81ecff" text-anchor="middle">3</text>
+      <text x="520" y="58" fill="#ffffff" text-anchor="middle">Checkout</text>
+      <circle cx="760" cy="18" r="18" fill="#1c1d1f" stroke="#2a2b2e" stroke-width="3"/><text x="760" y="23" fill="#adaaaa" text-anchor="middle">4</text>
+      <text x="760" y="58" fill="#adaaaa" text-anchor="middle">Delivered</text>
+    </g>
+
+    <!-- Gift bundle -->
+    <g transform="translate(40 190)">
+      <rect width="400" height="330" rx="18" fill="#1c1d1f" stroke="#2a2b2e"/>
+      <ellipse cx="200" cy="232" rx="120" ry="16" fill="#000000" fill-opacity="0.45"/>
+      <rect x="100" y="110" width="200" height="120" rx="8" fill="url(#box)"/>
+      <rect x="86" y="84" width="228" height="40" rx="8" fill="url(#lid)"/>
+      <rect x="186" y="84" width="28" height="146" fill="#81ecff"/>
+      <path d="M200 84 C160 30 120 50 150 80 Z" fill="#81ecff"/>
+      <path d="M200 84 C240 30 280 50 250 80 Z" fill="#00d4ec"/>
+      <circle cx="200" cy="82" r="10" fill="#e8fbff"/>
+      <text x="24" y="282" fill="#ffffff" font-size="18" font-weight="800">Birthday Memory Box</text>
+      <text x="24" y="308" fill="#adaaaa" font-size="13">Photo prints · Handwritten note · Chocolates</text>
+      <text x="376" y="282" fill="#81ecff" font-size="18" font-weight="800" text-anchor="end">Rs 2,450</text>
+    </g>
+
+    <!-- Payment panel -->
+    <g transform="translate(468 190)" font-size="13">
+      <rect width="392" height="330" rx="18" fill="#1c1d1f" stroke="#2a2b2e"/>
+      <text x="24" y="40" fill="#ffffff" font-size="17" font-weight="800">Order summary</text>
+      <g fill="#adaaaa">
+        <text x="24" y="80">Memory Box ×1</text><text x="368" y="80" text-anchor="end" fill="#ffffff">Rs 2,250</text>
+        <text x="24" y="108">Gift wrap</text><text x="368" y="108" text-anchor="end" fill="#ffffff">Rs 200</text>
+      </g>
+      <line x1="24" y1="126" x2="368" y2="126" stroke="#2a2b2e" stroke-width="2"/>
+      <text x="24" y="156" fill="#ffffff" font-size="15" font-weight="800">Total</text><text x="368" y="156" text-anchor="end" fill="#81ecff" font-size="15" font-weight="800">Rs 2,450</text>
+      <rect x="24" y="182" width="344" height="52" rx="12" fill="#60bb46"/>
+      <text x="196" y="214" fill="#ffffff" font-size="17" font-weight="800" text-anchor="middle">Pay with eSewa</text>
+      <rect x="24" y="252" width="344" height="52" rx="12" fill="#81ecff" fill-opacity="0.08" stroke="#81ecff" stroke-opacity="0.35"/>
+      <path d="M48 268 l10 4 v8 c0 6 -4 10 -10 12 c-6 -2 -10 -6 -10 -12 v-8z" fill="none" stroke="#81ecff" stroke-width="2.5"/>
+      <text x="72" y="276" fill="#81ecff" font-weight="800">HMAC-SHA256 verified</text>
+      <text x="72" y="294" fill="#adaaaa" font-size="12">Async confirmation via BullMQ</text>
+    </g>
+  </g>
+</svg>
