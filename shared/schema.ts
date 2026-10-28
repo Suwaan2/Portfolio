@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Single source of truth for portfolio content. The site, the AI chatbot and
 // (later) the admin panel all validate against these rules.
 
-const text = z.string().trim().min(1);
+const text = z.string().trim().min(1, 'Required');
 // Absolute URLs or site-relative paths such as /projects/x.png
 const link = z.string().trim().regex(/^(https?:\/\/|\/)\S*$/, 'Use a full URL or a path starting with /');
 const icon = z.string().regex(/^[a-z0-9_]+$/, 'Use a Material Symbols icon name, e.g. rocket_launch');

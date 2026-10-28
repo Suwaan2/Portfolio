@@ -9,8 +9,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { content, source } = await getContent();
-  // Vercel's edge cache serves most visitors; edits show up within about a minute
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+  // Only Vercel's CDN caches (edits show up within about a minute); browsers always re-check,
+  // otherwise a visitor's own cached copy could outlive an edit
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=60, stale-while-revalidate=300');
   res.setHeader('X-Content-Source', source);
   return res.status(200).json({ success: true, data: content });
 }

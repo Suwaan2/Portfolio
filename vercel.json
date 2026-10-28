@@ -4,5 +4,8 @@
   "functions": {
     "api/**/*.ts": { "includeFiles": "data/portfolio/**" }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "headers": [
+    { "source": "/admin(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+  ],
+  "rewrites":[{ "source": "/(.*)", "destination": "/index.html" }]
 }
