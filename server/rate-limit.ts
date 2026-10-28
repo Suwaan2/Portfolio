@@ -3,15 +3,21 @@ interface Bucket {
   blockUntil: number;
 }
 
-const buckets = new Map<string, Bucket>();
+type RequestLike = { headers: Record<string, string | string[] | undefined> };
 
-export const RATE_LIMIT = {
+export interface RateLimitConfig {
+  windowMs: number;
+  maxRequests: number;
+  blockMs: number;
+}
+
+export const RATE_LIMIT: RateLimitConfig = {
   windowMs: 60_000,
   maxRequests: 10,
   blockMs: 30_000,
 };
 
-function getClientIp(req: { headers: Record<string, string | string[] | undefined> }): string {
+export function getClientIp(req: RequestLike): string {
   const fwd = req.headers['x-forwarded-for'];
   if (typeof fwd === 'string') {
     const first = fwd.split(',')[0].trim();
@@ -22,45 +28,65 @@ function getClientIp(req: { headers: Record<string, string | string[] | undefine
   return req.headers['x-vercel-forwarded-for']?.toString().split(',')[0].trim() || 'unknown';
 }
 
-export function isRateLimited(req: { headers: Record<string, string | string[] | undefined> }): boolean {
-  const ip = getClientIp(req);
-  const now = Date.now();
+// Per-IP sliding window, in memory (per serverless instance)
+export function createRateLimiter(config: RateLimitConfig) {
+  const buckets = new Map<string, Bucket>();
 
-  let bucket = buckets.get(ip);
-  if (!bucket) {
-    bucket = { timestamps: [], blockUntil: 0 };
-    buckets.set(ip, bucket);
-  }
+  return {
+    isLimited(req: RequestLike): boolean {
+      const ip = getClientIp(req);
+      const now = Date.now();
 
-  if (bucket.blockUntil > now) {
-    return true;
-  }
+      let bucket = buckets.get(ip);
+      if (!bucket) {
+        bucket = { timestamps: [], blockUntil: 0 };
+        buckets.set(ip, bucket);
+      }
 
-  bucket.timestamps = bucket.timestamps.filter((t) => now - t < RATE_LIMIT.windowMs);
+      if (bucket.blockUntil > now) {
+        return true;
+      }
 
-  if (bucket.timestamps.length >= RATE_LIMIT.maxRequests) {
-    bucket.blockUntil = now + RATE_LIMIT.blockMs;
-    return true;
-  }
+      bucket.timestamps = bucket.timestamps.filter((t) => now - t < config.windowMs);
 
-  bucket.timestamps.push(now);
-  return false;
+      if (bucket.timestamps.length >= config.maxRequests) {
+        bucket.blockUntil = now + config.blockMs;
+        return true;
+      }
+
+      bucket.timestamps.push(now);
+      return false;
+    },
+
+    remaining(req: RequestLike): number {
+      const bucket = buckets.get(getClientIp(req));
+      const now = Date.now();
+      const recent = (bucket?.timestamps ?? []).filter((t) => now - t < config.windowMs).length;
+      return Math.max(0, config.maxRequests - recent);
+    },
+
+    reset(): void {
+      buckets.clear();
+    },
+  };
 }
 
-export function rateLimitHeaders(req: { headers: Record<string, string | string[] | undefined> }): {
+const chatLimiter = createRateLimiter(RATE_LIMIT);
+
+export function isRateLimited(req: RequestLike): boolean {
+  return chatLimiter.isLimited(req);
+}
+
+export function rateLimitHeaders(req: RequestLike): {
   'X-RateLimit-Limit': number;
   'X-RateLimit-Remaining': number;
 } {
-  const ip = getClientIp(req);
-  const bucket = buckets.get(ip);
-  const now = Date.now();
-  const recent = (bucket?.timestamps ?? []).filter((t) => now - t < RATE_LIMIT.windowMs).length;
   return {
     'X-RateLimit-Limit': RATE_LIMIT.maxRequests,
-    'X-RateLimit-Remaining': Math.max(0, RATE_LIMIT.maxRequests - recent),
+    'X-RateLimit-Remaining': chatLimiter.remaining(req),
   };
 }
 
 export function resetRateLimits(): void {
-  buckets.clear();
+  chatLimiter.reset();
 }

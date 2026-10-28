@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p api/tsconfig.json",
     "test": "vitest run tests",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "admin:secrets": "tsx scripts/admin-secrets.ts"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",
