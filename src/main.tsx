@@ -1,26 +1,13 @@
-import { StrictMode, Suspense, lazy } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
+import { Root } from './Root.tsx';
 import './index.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-// The admin panel is its own chunk, so visitors never download it
-const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/admin/*"
-          element={
-            <Suspense fallback={null}>
-              <AdminApp />
-            </Suspense>
-          }
-        />
-        <Route path="*" element={<App />} />
-      </Routes>
+      <Root />
     </BrowserRouter>
   </StrictMode>
 );

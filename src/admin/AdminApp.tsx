@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { sectionSchemas, type Content, type SectionKey } from '../../shared/schema';
 import { ContentContext } from '../lib/content';
 import { markIntroDone } from '../lib/intro';
-import { adminApi, AdminApiError, type AdminSections } from './api';
+import { adminApi, AdminApiError, type AdminSections, type HistoryEntry } from './api';
 import { FieldsEditor, type Errors } from './fields';
 import { SECTIONS, SECTION_ORDER } from './sections';
 
@@ -130,6 +130,56 @@ function SaveStatus({ state, dirty }: { state: SaveState; dirty: boolean }) {
     return null;
 }
 
+function HistoryPanel({ section, currentVersion, onRestore, onClose }: {
+    section: SectionKey;
+    currentVersion: number;
+    onRestore: (entry: HistoryEntry) => void;
+    onClose: () => void;
+}) {
+    const [entries, setEntries] = useState<HistoryEntry[] | null>(null);
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        let active = true;
+        setEntries(null);
+        adminApi
+            .history(section)
+            .then((h) => active && setEntries(h))
+            .catch((err) => active && setError(err instanceof Error ? err.message : 'Could not load history'));
+        return () => {
+            active = false;
+        };
+        // Reload after each save so the list includes the version just replaced
+    }, [section, currentVersion]);
+
+    return (
+        <div className="glass-card rounded-2xl p-5 space-y-3">
+            <div className="flex items-center justify-between">
+                <h2 className="font-headline font-bold">Earlier versions</h2>
+                <button className="text-sm text-on-surface-variant hover:text-primary" onClick={onClose}>
+                    Close
+                </button>
+            </div>
+            <p className="text-xs text-on-surface-variant">Restoring loads that version into the editor. Nothing changes until you save. The last 20 versions are kept.</p>
+            {error && <p className="text-sm text-error font-semibold">{error}</p>}
+            {!entries && !error && <p className="text-sm text-on-surface-variant">Loading…</p>}
+            {entries?.length === 0 && <p className="text-sm text-on-surface-variant">No earlier versions yet. They appear here after you save changes.</p>}
+            <ul className="divide-y divide-outline-variant/20">
+                {entries?.map((e) => (
+                    <li key={e.version} className="flex items-center justify-between gap-3 py-2">
+                        <span className="text-sm">
+                            <span className="font-mono text-on-surface-variant">v{e.version}</span> · saved {new Date(e.savedAt).toLocaleString()}
+                        </span>
+                        <button className="text-sm font-semibold text-primary hover:underline shrink-0" onClick={() => onRestore(e)}>
+                            Restore into editor
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
 function Dashboard({ onLoggedOut }: { onLoggedOut: () => void }) {
     const [sections, setSections] = useState<AdminSections | null>(null);
     const [drafts, setDrafts] = useState<Drafts | null>(null);
@@ -139,6 +189,7 @@ function Dashboard({ onLoggedOut }: { onLoggedOut: () => void }) {
     const [showErrors, setShowErrors] = useState(false);
     const [save, setSave] = useState<SaveState>({ kind: 'idle' });
     const [sessionExpired, setSessionExpired] = useState(false);
+    const [showHistory, setShowHistory] = useState(false);
 
     // No preloader here, so let the hero's entrance play in the preview
     useEffect(markIntroDone, []);
@@ -198,7 +249,17 @@ function Dashboard({ onLoggedOut }: { onLoggedOut: () => void }) {
         setActive(key);
         setShowErrors(false);
         setSave({ kind: 'idle' });
+        setShowHistory(false);
         if (!SECTIONS[key].preview) setTab('edit');
+    }
+
+    function restore(entry: HistoryEntry) {
+        if (dirty && !confirm('Replace your unsaved changes with this older version?')) return;
+        setDrafts((prev) => prev && { ...prev, [active]: structuredClone(entry.data) as Obj });
+        setShowErrors(true);
+        setTab('edit');
+        setShowHistory(false);
+        setSave({ kind: 'idle' });
     }
 
     async function saveActive(version = state.version) {
@@ -307,6 +368,14 @@ function Dashboard({ onLoggedOut }: { onLoggedOut: () => void }) {
                                 {state.version === 0
                                     ? 'Not saved to the database yet (showing the copy from the code)'
                                     : `Version ${state.version}${state.updatedAt ? ` · last saved ${new Date(state.updatedAt).toLocaleString()}` : ''}`}
+                                {state.version > 1 && (
+                                    <>
+                                        {' · '}
+                                        <button className="text-primary hover:underline" onClick={() => setShowHistory((s) => !s)} aria-expanded={showHistory}>
+                                            History
+                                        </button>
+                                    </>
+                                )}
                             </p>
                         </div>
                         {config.preview && (
@@ -325,6 +394,8 @@ function Dashboard({ onLoggedOut }: { onLoggedOut: () => void }) {
                             </div>
                         )}
                     </div>
+
+                    {showHistory && <HistoryPanel section={active} currentVersion={state.version} onRestore={restore} onClose={() => setShowHistory(false)} />}
 
                     {save.kind === 'conflict' && (
                         <div className="rounded-xl border border-error/50 bg-error/10 p-4 space-y-3" role="alert">

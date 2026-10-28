@@ -53,4 +53,11 @@ describe('content store', () => {
     await getContent();
     expect(getDb).toHaveBeenCalledTimes(1);
   });
+
+  it('skips the cache when asked for fresh content (the public API sits behind the CDN)', async () => {
+    getDb.mockResolvedValue(null);
+    await getContent();
+    await getContent({ fresh: true });
+    expect(getDb).toHaveBeenCalledTimes(2);
+  });
 });

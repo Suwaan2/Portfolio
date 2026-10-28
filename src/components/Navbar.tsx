@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '../lib/gsap';
-import { useContent } from '../lib/content';
+import { resumeLinkProps, useContent } from '../lib/content';
 
 const links = [
     { path: "/", label: "Home" },
@@ -30,7 +30,7 @@ export function Navbar() {
     const openRef = useRef(isOpen);
     openRef.current = isOpen;
     const { pathname } = useLocation();
-    const resumeHref = useContent().profile.resumeUrl;
+    const resumeLink = resumeLinkProps(useContent().profile.resumeUrl);
 
     // Slide away while reading (scrolling down), return on any upward scroll
     useGSAP(() => {
@@ -102,8 +102,7 @@ export function Navbar() {
 
                 <div className="hidden md:block">
                     <a
-                        href={resumeHref}
-                        download="Suan_KC_Resume.pdf"
+                        {...resumeLink}
                         className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-bold px-5 py-2.5 rounded-xl hover:shadow-[0_0_24px_rgba(129,236,255,0.35)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-[box-shadow,transform] duration-200"
                     >
                         <span className="material-symbols-outlined text-lg" aria-hidden="true">download</span>
@@ -165,8 +164,7 @@ export function Navbar() {
                             ))}
                             <motion.a
                                 variants={itemVariants}
-                                href={resumeHref}
-                                download="Suan_KC_Resume.pdf"
+                                {...resumeLink}
                                 onClick={() => setIsOpen(false)}
                                 className="bg-primary text-on-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-dim transition-colors text-center !mt-4"
                             >

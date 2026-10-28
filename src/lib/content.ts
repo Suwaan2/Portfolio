@@ -48,3 +48,8 @@ export const ContentContext = createContext<Content>(bundledContent);
 export function useContent(): Content {
     return useContext(ContentContext);
 }
+
+/** Link props for the resume: browsers ignore `download` on other origins (e.g. Cloudinary), so those open in a new tab */
+export function resumeLinkProps(url: string) {
+    return /^https?:\/\//.test(url) ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : { href: url, download: 'Suan_KC_Resume.pdf' };
+}

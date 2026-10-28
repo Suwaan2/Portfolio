@@ -22,11 +22,11 @@ export function invalidateContentCache() {
 }
 
 /**
- * Portfolio content from MongoDB, cached in memory for 60s.
+ * Portfolio content from MongoDB, cached in memory for 60s unless `fresh` is set.
  * Never throws: a missing, invalid or unreachable section falls back to data/portfolio/*.json.
  */
-export async function getContent(): Promise<{ content: Content; source: ContentSource }> {
-  if (cache && Date.now() - cache.at < CACHE_MS) return cache;
+export async function getContent({ fresh = false } = {}): Promise<{ content: Content; source: ContentSource }> {
+  if (!fresh && cache && Date.now() - cache.at < CACHE_MS) return cache;
 
   const files = loadFileContent();
   let content = files;
@@ -107,17 +107,57 @@ export async function saveSection<K extends SectionKey>(key: K, data: Content[K]
       if ((err as { code?: number }).code !== 11000) throw err;
     }
   } else {
-    const updated = await collection.findOneAndUpdate(
+    const previous = await collection.findOneAndUpdate(
       { _id: key, version: expectedVersion },
       { $set: { data, updatedAt }, $inc: { version: 1 } },
-      { returnDocument: 'after' },
+      { returnDocument: 'before' },
     );
-    if (updated) {
+    if (previous) {
       invalidateContentCache();
-      return { status: 'saved', version: updated.version };
+      await recordHistory(previous);
+      return { status: 'saved', version: previous.version + 1 };
     }
   }
 
   const current = await collection.findOne({ _id: key }, { projection: { version: 1 } });
   return { status: 'conflict', version: current?.version ?? 0 };
+}
+
+// Every replaced version is kept so a bad save can be undone from the admin
+export const HISTORY_COLLECTION = 'content_history';
+export const HISTORY_LIMIT = 20;
+
+export interface HistoryDoc {
+  section: SectionKey;
+  version: number;
+  data: unknown;
+  savedAt: Date;
+  replacedAt: Date;
+}
+
+async function recordHistory(previous: ContentDoc) {
+  try {
+    const db = await getDb();
+    const history = db!.collection<HistoryDoc>(HISTORY_COLLECTION);
+    await history.insertOne({ section: previous._id, version: previous.version, data: previous.data, savedAt: previous.updatedAt, replacedAt: new Date() });
+    const stale = await history.find({ section: previous._id }).sort({ version: -1 }).skip(HISTORY_LIMIT).project({ _id: 1 }).toArray();
+    if (stale.length) await history.deleteMany({ _id: { $in: stale.map((d) => d._id) } });
+  } catch (err) {
+    // The save itself succeeded; losing one history entry isn't worth failing it
+    console.error('[content] could not record history for', previous._id, err);
+  }
+}
+
+export interface HistoryEntry {
+  version: number;
+  savedAt: string;
+  data: unknown;
+}
+
+/** Earlier versions of a section, newest first. */
+export async function getSectionHistory(key: SectionKey): Promise<HistoryEntry[]> {
+  const db = await getDb();
+  if (!db) throw new Error('MONGODB_URI is not set');
+  const docs = await db.collection<HistoryDoc>(HISTORY_COLLECTION).find({ section: key }).sort({ version: -1 }).limit(HISTORY_LIMIT).toArray();
+  return docs.map((d) => ({ version: d.version, savedAt: d.savedAt.toISOString(), data: d.data }));
 }

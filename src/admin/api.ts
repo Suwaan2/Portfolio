@@ -51,7 +51,15 @@ export const adminApi = {
     content: () => request<{ sections: AdminSections }>('GET', 'content').then((r) => r.sections),
     save: <K extends SectionKey>(section: K, data: Content[K], version: number) =>
         request<{ version: number }>('PUT', 'section', { section, data, version }).then((r) => r.version),
+    history: (section: SectionKey) =>
+        request<{ history: HistoryEntry[] }>('GET', `history&section=${section}`).then((r) => r.history),
 };
+
+export interface HistoryEntry {
+    version: number;
+    savedAt: string;
+    data: unknown;
+}
 
 export type UploadKind = 'image' | 'resume';
 

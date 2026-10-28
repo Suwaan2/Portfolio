@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../../lib/useScrollReveal';
 import { useMagnetic } from '../../lib/useMagnetic';
-import { useContent } from '../../lib/content';
+import { resumeLinkProps, useContent } from '../../lib/content';
 
 export function Contact() {
     const { resumeUrl } = useContent().profile;
@@ -44,8 +44,7 @@ export function Contact() {
                         <span ref={secondary} className="block sm:inline-block">
                             <a
                                 className="flex items-center justify-center gap-2 h-14 md:h-16 px-8 md:px-10 bg-surface-container-highest text-on-surface font-bold rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:border-primary/40 active:scale-[0.97] transition-[background-color,border-color,transform] duration-200"
-                                href={resumeUrl}
-                                download="Suan_KC_Resume.pdf"
+                                {...resumeLinkProps(resumeUrl)}
                             >
                                 <span className="material-symbols-outlined text-xl" aria-hidden="true">download</span>
                                 Download CV

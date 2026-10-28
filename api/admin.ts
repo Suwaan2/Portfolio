@@ -2,7 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
 import { sectionSchemas, SECTION_KEYS, type SectionKey } from '../shared/schema.js';
 import { getEnv } from '../server/env.js';
-import { createRateLimiter } from '../server/rate-limit.js';
+import { getClientIp } from '../server/rate-limit.js';
+import { clearLoginFailures, isLoginBlocked, recordLoginFailure } from '../server/login-guard.js';
 import {
   SESSION_COOKIE,
   clearedSessionCookie,
@@ -12,7 +13,7 @@ import {
   verifyPassword,
   verifySessionToken,
 } from '../server/admin-auth.js';
-import { getAdminSections, saveSection } from '../server/content-store.js';
+import { getAdminSections, getSectionHistory, saveSection } from '../server/content-store.js';
 import { createUploadSignature } from '../server/cloudinary.js';
 
 // One function for every admin action (keeps the Vercel function count down):
@@ -21,19 +22,15 @@ import { createUploadSignature } from '../server/cloudinary.js';
 //   GET  ?action=session
 //   GET  ?action=content          every section with its version
 //   PUT  ?action=section          { section, data, version }
+//   GET  ?action=history&section= earlier versions of one section, newest first
 //   POST ?action=upload-signature { kind: 'image' | 'resume' }
 // Mutating requests must send `X-Admin-Request: 1`; browsers won't add a custom header
 // to a cross-site request without a CORS preflight, which this endpoint never allows.
 
-const loginLimiter = createRateLimiter({ windowMs: 15 * 60_000, maxRequests: 5, blockMs: 15 * 60_000 });
-
-export function resetLoginLimits() {
-  loginLimiter.reset();
-}
-
+const sectionKeySchema = z.enum(SECTION_KEYS as [SectionKey, ...SectionKey[]]);
 const loginSchema = z.object({ password: z.string().min(1).max(200) });
 const saveSchema = z.object({
-  section: z.enum(SECTION_KEYS as [SectionKey, ...SectionKey[]]),
+  section: sectionKeySchema,
   data: z.unknown(),
   version: z.number().int().nonnegative(),
 });
@@ -65,9 +62,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (route === 'POST login') {
-    if (loginLimiter.isLimited(req)) return fail(res, 429, 'Too many login attempts. Try again in 15 minutes.');
+    const ip = getClientIp(req);
+    if (await isLoginBlocked(ip)) return fail(res, 429, 'Too many failed logins. Try again in 15 minutes.');
     const body = loginSchema.safeParse(req.body);
-    if (!body.success || !verifyPassword(body.data.password, passwordHash)) return fail(res, 401, 'Wrong password');
+    if (!body.success || !verifyPassword(body.data.password, passwordHash)) {
+      await recordLoginFailure(ip);
+      return fail(res, 401, 'Wrong password');
+    }
+    await clearLoginFailures(ip);
     res.setHeader('Set-Cookie', sessionCookie(createSessionToken(sessionSecret)));
     return res.status(200).json({ success: true });
   }
@@ -88,6 +90,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (route === 'GET content') {
       return res.status(200).json({ success: true, sections: await getAdminSections() });
+    }
+
+    if (route === 'GET history') {
+      const section = sectionKeySchema.safeParse(req.query.section);
+      if (!section.success) return fail(res, 400, 'Unknown section');
+      return res.status(200).json({ success: true, history: await getSectionHistory(section.data) });
     }
 
     if (route === 'PUT section') {

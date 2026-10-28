@@ -8,7 +8,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
-  const { content, source } = await getContent();
+  // The CDN already caches this response; a second in-memory cache would add up to a minute of staleness
+  const { content, source } = await getContent({ fresh: true });
   // Only Vercel's CDN caches (edits show up within about a minute); browsers always re-check,
   // otherwise a visitor's own cached copy could outlive an edit
   res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');

@@ -19,7 +19,7 @@ export function signParams(params: Record<string, string | number>, apiSecret: s
 
 export interface UploadSignature {
   uploadUrl: string;
-  fields: { api_key: string; timestamp: number; folder: string; signature: string };
+  fields: { api_key: string; timestamp: number; folder: string; public_id?: string; signature: string };
 }
 
 // The browser posts the file plus these fields straight to Cloudinary, so uploads skip Vercel's body limit
@@ -30,8 +30,11 @@ export function createUploadSignature(
 ): UploadSignature {
   const { folder, resourceType } = UPLOAD_TARGETS[kind];
   const timestamp = Math.floor(now / 1000);
+  // Raw files keep no extension unless the public id has one; without ".pdf" the
+  // resume would download as an extensionless file with a random name
+  const params: Record<string, string | number> = kind === 'resume' ? { folder, timestamp, public_id: `resume-${timestamp}.pdf` } : { folder, timestamp };
   return {
     uploadUrl: `https://api.cloudinary.com/v1_1/${creds.cloudName}/${resourceType}/upload`,
-    fields: { api_key: creds.apiKey, timestamp, folder, signature: signParams({ folder, timestamp }, creds.apiSecret) },
+    fields: { api_key: creds.apiKey, ...params, signature: signParams(params, creds.apiSecret) } as UploadSignature['fields'],
   };
 }
