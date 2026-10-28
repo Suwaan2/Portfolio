@@ -1,25 +1,9 @@
 import { useRef } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
-
-const groups = [
-    {
-        icon: 'laptop_chromebook',
-        title: 'Frontend',
-        skills: ['Next.js', 'React 18/19', 'Redux Toolkit', 'RTK Query', 'React Router', 'Vite', 'Tailwind CSS', 'Bootstrap', 'Axios', 'HTML5', 'CSS3', 'Responsive Design'],
-    },
-    {
-        icon: 'database',
-        title: 'Backend & DB',
-        skills: ['Node.js', 'Express', 'JWT', 'REST APIs', 'MCP', 'Zod', 'MongoDB', 'Mongoose', 'PostgreSQL', 'Prisma', 'Redis'],
-    },
-    {
-        icon: 'architecture',
-        title: 'Tools & Testing',
-        skills: ['Docker', 'BullMQ', 'Cloudinary', 'Git / GitHub', 'Postman', 'Vercel', 'Figma', 'Canva', 'Trello', 'Vitest', 'Playwright', 'Supertest'],
-    },
-];
+import { useContent } from '../lib/content';
 
 export function Skills() {
+    const { groups } = useContent().skills;
     const ref = useRef<HTMLElement>(null);
     useScrollReveal(ref);
 

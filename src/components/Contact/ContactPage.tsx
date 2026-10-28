@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../lib/useScrollReveal';
+import { useContent } from '../../lib/content';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
@@ -7,6 +8,7 @@ const inputClass =
     'w-full bg-surface-container-highest border border-outline-variant/20 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant/50 transition-[border-color,box-shadow] duration-200 font-body';
 
 export function ContactPage() {
+    const { email } = useContent().contact;
     const [status, setStatus] = useState<Status>('idle');
     const ref = useRef<HTMLElement>(null);
     useScrollReveal(ref);
@@ -25,7 +27,7 @@ export function ContactPage() {
 
         setStatus('sending');
         try {
-            const res = await fetch('https://formsubmit.co/ajax/suankc22@gmail.com', {
+            const res = await fetch(`https://formsubmit.co/ajax/${email}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +128,7 @@ export function ContactPage() {
                         {status === 'error' && (
                             <p className="mt-6 flex items-start gap-2 text-error font-body font-semibold animate-[status-in_300ms_ease-out]">
                                 <span className="material-symbols-outlined" aria-hidden="true">error</span>
-                                Something went wrong while sending your message. Please try again or email me directly at suankc22@gmail.com.
+                                Something went wrong while sending your message. Please try again or email me directly at {email}.
                             </p>
                         )}
                     </div>

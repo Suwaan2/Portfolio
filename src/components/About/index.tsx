@@ -1,17 +1,11 @@
 import { useRef } from 'react';
 import { gsap, useGSAP, MOTION_OK } from '../../lib/gsap';
 import { useScrollReveal } from '../../lib/useScrollReveal';
-
-type Stat = { value: string; label: string; count?: number; suffix?: string };
-
-const stats: Stat[] = [
-    { value: 'CS', label: 'Education' },
-    { value: 'React', label: 'Specialization' },
-    { value: '5', count: 5, label: 'Featured Projects' },
-    
-];
+import { useContent } from '../../lib/content';
+import { RichText } from '../RichText';
 
 export function About() {
+    const { about } = useContent();
     const ref = useRef<HTMLElement>(null);
     useScrollReveal(ref);
 
@@ -52,16 +46,15 @@ export function About() {
                             About My <span className="text-primary">Journey</span>
                         </h2>
                         <div className="space-y-6 text-on-surface-variant leading-relaxed font-body text-lg">
-                            <p data-reveal>
-                                My journey began as a curious CS student at <span className="text-on-surface">Vedas College</span>, where I discovered the immense power of code to bring abstract ideas to life. This academic foundation paved the way for my role as a Junior Frontend Developer at <span className="text-on-surface">Anand Marketing Tech</span>.
-                            </p>
-                            <p data-reveal>
-                                I found my niche in the intersection of aesthetics and logic. My true passion lies in <span className="text-primary-dim">bridging the gap</span> between intricate Figma designs and high-performance, production-ready React applications.
-                            </p>
+                            {about.paragraphs.map((p, i) => (
+                                <p key={i} data-reveal>
+                                    <RichText text={p} strongClassName="text-on-surface" accentClassName="text-primary-dim" />
+                                </p>
+                            ))}
                         </div>
                     </div>
                     <div data-reveal-group="pop" className="lg:col-span-7 grid grid-cols-2 gap-4">
-                        {stats.map((s) => (
+                        {about.stats.map((s) => (
                             <div
                                 key={s.label}
                                 data-reveal-item

@@ -1,7 +1,8 @@
 import type { GoogleGenAI } from '@google/genai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getGemini, getModelName, getFallbackModelName } from '../lib/gemini.js';
-import { loadKnowledge } from '../lib/knowledge.js';
+import { toKnowledge, type PortfolioKnowledge } from '../lib/knowledge.js';
+import { getContent } from '../../server/content-store.js';
 import { buildSystemPrompt } from '../lib/prompt.js';
 import { chatRequestSchema } from '../lib/validation.js';
 import { isRateLimited, rateLimitHeaders, RATE_LIMIT } from '../lib/rate-limit.js';
@@ -35,7 +36,7 @@ function splitReferenceMarkers(text: string, out: string[]): string {
   return kept.join('\n');
 }
 
-function resolveReferences(refIds: string[], knowledge: Awaited<ReturnType<typeof loadKnowledge>>): Reference[] {
+function resolveReferences(refIds: string[], knowledge: PortfolioKnowledge): Reference[] {
   const seen = new Set<string>();
   const refs: Reference[] = [];
 
@@ -101,7 +102,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let knowledge;
   let generate: (model: string) => ReturnType<GoogleGenAI['models']['generateContentStream']>;
   try {
-    knowledge = loadKnowledge();
+    knowledge = toKnowledge((await getContent()).content);
     const systemPrompt = buildSystemPrompt(knowledge);
     const gemini = getGemini();
 

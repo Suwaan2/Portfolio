@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { gsap, SplitText, useGSAP, EASE, MOTION_OK } from '../lib/gsap';
 import { markIntroDone } from '../lib/intro';
+import { contentRequest } from '../lib/content';
 
 const MIN_DISPLAY_MS = 1200;
 
@@ -48,7 +49,7 @@ export function Preloader() {
                     .to('[data-bar]', { scaleX: 0.9, duration: MIN_DISPLAY_MS / 1000, ease: 'power1.inOut' }, 0);
 
                 // Outro only once the page has actually loaded: finish the count, then lift the curtain
-                Promise.all([pageLoaded(), intro.then()]).then(() => {
+                Promise.all([pageLoaded(), intro.then(), contentRequest]).then(() => {
                     if (cancelled) return;
                     gsap
                         .timeline({ onComplete: finish })
@@ -67,7 +68,7 @@ export function Preloader() {
             });
 
             mm.add('(prefers-reduced-motion: reduce)', () => {
-                pageLoaded().then(() => !cancelled && finish());
+                Promise.all([pageLoaded(), contentRequest]).then(() => !cancelled && finish());
             });
 
             return () => {

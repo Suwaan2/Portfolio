@@ -1,11 +1,14 @@
-const socials = [
-    { label: 'GitHub', href: 'https://github.com/Suwaan2' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/suan-kc/' },
-    { label: 'Twitter', href: 'https://x.com/Suan45126923' },
-    { label: 'Email', href: 'mailto:kcsuan424@gmail.com' },
-];
+import { useContent } from '../lib/content';
 
 export function Footer() {
+    const { contact } = useContent();
+    const socials = [
+        { label: 'GitHub', href: contact.github },
+        { label: 'LinkedIn', href: contact.linkedin },
+        { label: 'Twitter', href: contact.twitter },
+        { label: 'Email', href: `mailto:${contact.email}` },
+    ].filter((s): s is { label: string; href: string } => Boolean(s.href));
+
     const scrollTop = () => {
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });

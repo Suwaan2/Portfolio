@@ -1,30 +1,10 @@
 import { useRef } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
-
-const highlights = [
-    {
-        icon: 'shopping_cart',
-        body: (
-            <>
-                Developed <span className="text-on-surface font-bold">Ecommerce-Fashion</span>, a live multi-vendor e-commerce platform with JWT-based MERN auth and role-based dashboards.
-            </>
-        ),
-    },
-    {
-        icon: 'rocket_launch',
-        body: <>Resolved critical deployment blockers to bring the platform to production.</>,
-    },
-    {
-        icon: 'stacked_bar_chart',
-        body: (
-            <>
-                Worked across <span className="text-on-surface font-bold">React, Redux Toolkit, Node.js, Express, PostgreSQL, and Redis</span> in a production environment.
-            </>
-        ),
-    },
-];
+import { useContent } from '../lib/content';
+import { RichText } from './RichText';
 
 export function Experience() {
+    const { experience } = useContent().experience;
     const ref = useRef<HTMLElement>(null);
     useScrollReveal(ref);
 
@@ -50,34 +30,40 @@ export function Experience() {
                         <span className="absolute -left-[5px] top-12 h-[11px] w-[11px] rounded-full bg-primary shadow-[0_0_0_4px_rgba(129,236,255,0.15),0_0_20px_rgba(129,236,255,0.6)]" />
                     </div>
 
-                    <article data-reveal className="spotlight glass-card p-8 md:p-12 rounded-[2rem] relative overflow-hidden transition-[border-color] duration-300 hover:border-primary/20">
-                        <div className="absolute -top-10 -right-10 p-8 opacity-5" aria-hidden="true">
-                            <span className="material-symbols-outlined text-[150px]">corporate_fare</span>
-                        </div>
-                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4 relative z-10">
-                            <div>
-                                <h3 className="text-2xl font-headline font-bold text-primary">Junior Frontend Developer</h3>
-                                <p className="text-on-surface font-semibold text-lg">Anand Marketing Tech</p>
-                            </div>
-                            <div className="font-mono text-on-surface-variant text-xs tracking-widest uppercase bg-surface-container-highest px-4 py-2 rounded-lg inline-flex items-center gap-2 self-start md:self-auto">
-                                <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
-                                Jan 2026 – Present
-                            </div>
-                        </div>
-                        <ul data-reveal-group className="grid md:grid-cols-2 gap-x-12 gap-y-8 relative z-10">
-                            {highlights.map((h) => (
-                                <li key={h.icon} data-reveal-item className="group flex gap-4 items-start">
-                                    <span
-                                        className="material-symbols-outlined text-primary mt-0.5 rounded-lg bg-primary/10 p-2 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
-                                        aria-hidden="true"
-                                    >
-                                        {h.icon}
-                                    </span>
-                                    <p className="text-on-surface-variant leading-relaxed text-sm md:text-base">{h.body}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    </article>
+                    <div className="space-y-8">
+                        {experience.map((job) => (
+                            <article key={`${job.company}-${job.role}`} data-reveal className="spotlight glass-card p-8 md:p-12 rounded-[2rem] relative overflow-hidden transition-[border-color] duration-300 hover:border-primary/20">
+                                <div className="absolute -top-10 -right-10 p-8 opacity-5" aria-hidden="true">
+                                    <span className="material-symbols-outlined text-[150px]">corporate_fare</span>
+                                </div>
+                                <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4 relative z-10">
+                                    <div>
+                                        <h3 className="text-2xl font-headline font-bold text-primary">{job.role}</h3>
+                                        <p className="text-on-surface font-semibold text-lg">{job.company}</p>
+                                    </div>
+                                    <div className="font-mono text-on-surface-variant text-xs tracking-widest uppercase bg-surface-container-highest px-4 py-2 rounded-lg inline-flex items-center gap-2 self-start md:self-auto">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+                                        {job.period}
+                                    </div>
+                                </div>
+                                <ul data-reveal-group className="grid md:grid-cols-2 gap-x-12 gap-y-8 relative z-10">
+                                    {job.highlights.map((h, i) => (
+                                        <li key={i} data-reveal-item className="group flex gap-4 items-start">
+                                            <span
+                                                className="material-symbols-outlined text-primary mt-0.5 rounded-lg bg-primary/10 p-2 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                                                aria-hidden="true"
+                                            >
+                                                {h.icon}
+                                            </span>
+                                            <p className="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                                                <RichText text={h.text} strongClassName="text-on-surface font-bold" />
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

@@ -3,9 +3,16 @@ import { Link } from 'react-router-dom';
 import { gsap, SplitText, useGSAP, EASE, DUR, MOTION_OK } from '../lib/gsap';
 import { onIntroDone } from '../lib/intro';
 import { useMagnetic } from '../lib/useMagnetic';
+import { useContent } from '../lib/content';
+import { RichText } from './RichText';
 
 export function Hero() {
+    const { hero, availability, contact } = useContent();
     const heroRef = useRef<HTMLElement>(null);
+    const socials = [
+        { label: 'GitHub', icon: 'terminal', href: contact.github },
+        { label: 'LinkedIn', icon: 'work', href: contact.linkedin },
+    ].filter((s): s is typeof s & { href: string } => Boolean(s.href));
     const primaryCta = useMagnetic<HTMLSpanElement>(0.25);
     const secondaryCta = useMagnetic<HTMLSpanElement>(0.25);
 
@@ -99,29 +106,31 @@ export function Hero() {
 
             <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 grid lg:grid-cols-2 gap-16 items-center relative z-10">
                 <div data-hero-copy className="space-y-8">
-                    <div data-hero-badge className="inline-flex items-center gap-2 px-3 py-1.5 bg-surface-container-high/80 rounded-full border border-outline-variant/30">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                        </span>
-                        <span className="text-primary font-mono text-xs uppercase tracking-[0.2em]">Available for Hire</span>
-                    </div>
+                    {availability.available && (
+                        <div data-hero-badge className="inline-flex items-center gap-2 px-3 py-1.5 bg-surface-container-high/80 rounded-full border border-outline-variant/30">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                            </span>
+                            <span className="text-primary font-mono text-xs uppercase tracking-[0.2em]">{availability.message}</span>
+                        </div>
+                    )}
 
                     <h1 data-hero-title className="text-5xl md:text-7xl font-headline font-bold leading-[1.05] tracking-tight text-balance">
-                        Crafting Scalable{' '}
+                        {hero.headline.lead}{' '}
                         <span className="relative inline-block text-primary">
-                            Website
+                            {hero.headline.highlight}
                             <span
                                 data-hero-underline
                                 className="absolute left-0 -bottom-1 h-[3px] w-full origin-left rounded-full bg-gradient-to-r from-primary to-transparent"
                                 aria-hidden="true"
                             />
                         </span>{' '}
-                        Experiences with Precision.
+                        {hero.headline.tail}
                     </h1>
 
                     <p data-hero-fade className="text-lg md:text-xl text-on-surface-variant max-w-xl font-body leading-relaxed">
-                        I am <span className="text-on-surface font-semibold">Suan KC</span>, a Junior Frontend Developer specializing in React, Next.js, and the MERN stack, turning complex problems into elegant, user-centric digital solutions.
+                        <RichText text={hero.intro} strongClassName="text-on-surface font-semibold" />
                     </p>
 
                     <div data-hero-fade className="flex flex-wrap gap-4 pt-2">
@@ -145,12 +154,11 @@ export function Hero() {
                     </div>
 
                     <div data-hero-fade className="flex items-center gap-6 pt-4">
-                        <a className="text-on-surface-variant hover:text-primary transition-colors duration-200 flex items-center gap-2 min-h-[44px]" href="https://github.com/Suwaan2" target="_blank" rel="noopener noreferrer">
-                            <span className="material-symbols-outlined" aria-hidden="true">terminal</span> GitHub
-                        </a>
-                        <a className="text-on-surface-variant hover:text-primary transition-colors duration-200 flex items-center gap-2 min-h-[44px]" href="https://www.linkedin.com/in/suan-kc/" target="_blank" rel="noopener noreferrer">
-                            <span className="material-symbols-outlined" aria-hidden="true">work</span> LinkedIn
-                        </a>
+                        {socials.map((s) => (
+                            <a key={s.label} className="text-on-surface-variant hover:text-primary transition-colors duration-200 flex items-center gap-2 min-h-[44px]" href={s.href} target="_blank" rel="noopener noreferrer">
+                                <span className="material-symbols-outlined" aria-hidden="true">{s.icon}</span> {s.label}
+                            </a>
+                        ))}
                     </div>
                 </div>
 
@@ -159,8 +167,8 @@ export function Hero() {
                         <img
                             data-hero-img
                             className="w-full h-full object-cover opacity-60"
-                            alt="abstract close-up of computer code on a high-definition monitor with blue and cyan neon light reflecting on the screen"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp-YyEMlgyOU10GBa5rcI35DI1z5OEmBEHXxPTUVTNr4cL2_rbuoL09y5uT4k-Wljt_uAGz8osz6I1VLIFsrnXWpHXzPR4Eko6i3r0K7G7n255QTrT-r1j5NaxqZEXn7GRi1LOVFtMLghjHW7efazHepTgAsvGEHDsRttFcTRzeBVPbDCIC8erHnjxnBwPRflwo2UEgq34qXJ6APrCI13tnIjeGg9RNOamX30F3oV4u5vBKk_xHTMNE15s14WNvuLa6i_fRRxFCxGk"
+                            alt={hero.imageAlt}
+                            src={hero.image}
                         />
                         <div className="absolute inset-0 bg-gradient-to-tr from-background/70 via-transparent to-primary/10" />
                         {/* HUD corner brackets */}
@@ -179,8 +187,8 @@ export function Hero() {
                                 <span className="material-symbols-outlined" aria-hidden="true">code</span>
                             </div>
                             <div>
-                                <p className="text-xs text-on-surface-variant font-label">Core Focus</p>
-                                <p className="font-headline font-bold text-sm">Frontend Engineering</p>
+                                <p className="text-xs text-on-surface-variant font-label">{hero.focus.label}</p>
+                                <p className="font-headline font-bold text-sm">{hero.focus.value}</p>
                             </div>
                         </div>
                     </div>

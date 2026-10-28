@@ -4,8 +4,19 @@
       "id": "vault",
       "name": "Vault",
       "type": "Personal Video/Bookmark Library Platform",
+      "icon": "bookmark",
+      "summary": "Personal video and bookmark library platform with OpenGraph scraping and AI-generated summaries via OpenAI.",
       "description": "Full-stack Next.js (App Router) platform for saving and organizing content from Instagram, TikTok, YouTube, X, and Facebook, with OpenGraph link scraping and AI-generated summaries/tags via OpenAI GPT-4o-mini.",
-      "technologies": ["Next.js 16", "TypeScript", "Prisma 7", "PostgreSQL", "NextAuth", "Tailwind CSS v4", "Zod", "OpenAI API"],
+      "technologies": [
+        "Next.js 16",
+        "TypeScript",
+        "Prisma 7",
+        "PostgreSQL",
+        "NextAuth",
+        "Tailwind CSS v4",
+        "Zod",
+        "OpenAI API"
+      ],
       "features": [
         "OpenGraph link scraping across major social platforms",
         "AI-generated summaries and tags via OpenAI GPT-4o-mini",
@@ -14,14 +25,33 @@
         "5-phase, 32-sprint delivery plan"
       ],
       "role": "Full-stack design and implementation",
-      "challenges": []
+      "challenges": [],
+      "tags": [
+        "Next.js",
+        "Prisma",
+        "OpenAI"
+      ],
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd",
+      "imageAlt": "Vault bookmark library platform"
     },
     {
       "id": "video-platform",
       "name": "VideoPlatform App",
       "type": "Fullstack Video Sharing Platform",
+      "icon": "play_circle",
+      "summary": "Fullstack YouTube-style video platform with JWT auth, Cloudinary storage, Redis caching, and Docker Compose deployment.",
       "description": "YouTube-style video platform (MERN) with JWT access/refresh auth, Cloudinary storage, and Redis caching across 7 models and 9 REST controllers, deployed live via Docker Compose.",
-      "technologies": ["React 19", "Redux Toolkit (RTK Query)", "Node.js", "Express 5", "MongoDB", "Redis", "Cloudinary", "JWT", "Docker"],
+      "technologies": [
+        "React 19",
+        "Redux Toolkit (RTK Query)",
+        "Node.js",
+        "Express 5",
+        "MongoDB",
+        "Redis",
+        "Cloudinary",
+        "JWT",
+        "Docker"
+      ],
       "features": [
         "JWT access/refresh token authentication",
         "Cloudinary media storage",
@@ -34,14 +64,34 @@
       "challenges": [],
       "links": {
         "live": "https://video-player-platform.vercel.app/home"
-      }
+      },
+      "tags": [
+        "React 19",
+        "Express 5",
+        "Docker"
+      ],
+      "image": "/projects/video-platform.png",
+      "imageAlt": "StreamVault video platform homepage screenshot"
     },
     {
       "id": "momorybox",
       "name": "MomoryBox",
       "type": "Personalized Gift E-Commerce Platform",
+      "icon": "redeem",
+      "summary": "Personalized gift e-commerce platform with multi-step checkout, eSewa payments, and 70+ REST endpoints with RBAC.",
       "description": "Full-stack MERN e-commerce platform for personalized gift bundles with a guided multi-step checkout and a secondary bookable Experience Truck product line, integrating eSewa payments via custom HMAC-SHA256 verification.",
-      "technologies": ["React 18", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Prisma/PostgreSQL", "Redis", "BullMQ", "eSewa", "Docker"],
+      "technologies": [
+        "React 18",
+        "Redux Toolkit",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Prisma/PostgreSQL",
+        "Redis",
+        "BullMQ",
+        "eSewa",
+        "Docker"
+      ],
       "features": [
         "Guided multi-step checkout for gift bundles",
         "Bookable Experience Truck product line",
@@ -52,14 +102,30 @@
         "Playwright E2E and Vitest testing"
       ],
       "role": "Fullstack implementation",
-      "challenges": []
+      "challenges": [],
+      "tags": [
+        "MERN",
+        "eSewa",
+        "BullMQ"
+      ],
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCY5hO_M7IDbpAbj_SjHQ7bHccSXQACykadDVIWo4uOesggIUg1gjdSHQ7sDAf2ghF1BX6Al_my3zlBY3FNyEMgFCQWsw3ZfBuZg0OKDQqaS9sfHfhgxVgkjfMQeG2WtUM5NdrkCUNV5z67CUT-6hB0uU5CF40E2YhBkqFRcqeOCXEBDPE1t-2OvQJ1RMlaBgJpUoZAE1_cXJALOempGaLPqPshi0jVM6rBy9k-w7TMMCo5H8W2mQMKIjCBZNmYqvmarl7W7a85W0D1",
+      "imageAlt": "MomoryBox gift e-commerce platform"
     },
     {
       "id": "pmt-frontend",
       "name": "PMT Frontend",
       "type": "Multi-Role Project Management SaaS",
+      "icon": "dashboard",
+      "summary": "Multi-role project management SaaS frontend with 6 roles, ~130 routes, cookie-based JWT auth, and granular permissions.",
       "description": "Frontend for a 6-role project management SaaS platform (Client, PM, OM/CEO, Employee, Accounts, SuperAdmin) spanning ~130 routes, 114 components, and 24 Redux slices.",
-      "technologies": ["React 19", "Vite", "Redux Toolkit", "React Router v7", "Tailwind CSS", "Axios"],
+      "technologies": [
+        "React 19",
+        "Vite",
+        "Redux Toolkit",
+        "React Router v7",
+        "Tailwind CSS",
+        "Axios"
+      ],
       "features": [
         "6 user roles across ~130 routes and 114 components",
         "24 Redux slices for state management",
@@ -68,14 +134,29 @@
         "Dynamic custom roles and permission presets"
       ],
       "role": "Frontend development",
-      "challenges": []
+      "challenges": [],
+      "tags": [
+        "React 19",
+        "Redux Toolkit",
+        "Vite"
+      ],
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd",
+      "imageAlt": "Project management SaaS dashboard"
     },
     {
       "id": "trello-mcp",
       "name": "TrelloMCP",
       "type": "Model Context Protocol Server for Trello",
+      "icon": "view_kanban",
+      "summary": "Model Context Protocol server exposing Trello as callable tools for AI assistants like Claude Desktop.",
       "description": "MCP server exposing Trello as 4 callable tools (get_boards, get_cards, create_card, move_card) for AI assistants like Claude Desktop, using the official MCP SDK over stdio transport with Zod-validated schemas.",
-      "technologies": ["Node.js (ESM)", "Model Context Protocol SDK", "Zod", "Axios", "Python"],
+      "technologies": [
+        "Node.js (ESM)",
+        "Model Context Protocol SDK",
+        "Zod",
+        "Axios",
+        "Python"
+      ],
       "features": [
         "4 callable Trello tools for AI assistants",
         "Official MCP SDK over stdio transport",
@@ -86,7 +167,14 @@
       "challenges": [],
       "links": {
         "github": "https://github.com/Suwaan2/Trello_MCP"
-      }
+      },
+      "tags": [
+        "MCP SDK",
+        "Node.js",
+        "Zod"
+      ],
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAPp9w2EibPpnUxzrtU6AI-UGHbX-Q5VPIoDsmhjd32xnpSl6d79YcqM9RQNVgL9VXePSyvv-dACBKqi41TMcaz9JW1YIHSeBnPE2-MxZUW7eRCT7rTAcdEMryCKvg_Y8FC-ecKc74ST-uayFC4eAjQyFwN-ZXfjznB3EY19ukWSbHQ4Z1y7447MQlXVLzocFJASN5V1fVP_YESoBqNfoWg1m0sMp4au2O0oeUmcKTvprVLzjCdTUy0U9FQkHeSvzFTYyMs5aoCBas4",
+      "imageAlt": "Trello MCP server"
     }
   ]
 }

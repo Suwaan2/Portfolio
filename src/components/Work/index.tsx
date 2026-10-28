@@ -1,64 +1,12 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../lib/useScrollReveal';
-
-type Project = {
-    title: string;
-    icon: string;
-    description: string;
-    tags: string[];
-    image: string;
-    alt: string;
-    href?: string;
-};
-
-const projects: Project[] = [
-    {
-        title: 'Vault',
-        icon: 'bookmark',
-        description: 'Personal video and bookmark library platform with OpenGraph scraping and AI-generated summaries via OpenAI.',
-        tags: ['Next.js', 'Prisma', 'OpenAI'],
-        alt: 'Vault bookmark library platform',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd',
-    },
-    {
-        title: 'VideoPlatform App',
-        icon: 'play_circle',
-        description: 'Fullstack YouTube-style video platform with JWT auth, Cloudinary storage, Redis caching, and Docker Compose deployment.',
-        tags: ['React 19', 'Express 5', 'Docker'],
-        alt: 'StreamVault video platform homepage screenshot',
-        image: `${import.meta.env.BASE_URL}projects/video-platform.png`,
-        href: 'https://video-player-platform.vercel.app/home',
-    },
-    {
-        title: 'MomoryBox',
-        icon: 'redeem',
-        description: 'Personalized gift e-commerce platform with multi-step checkout, eSewa payments, and 70+ REST endpoints with RBAC.',
-        tags: ['MERN', 'eSewa', 'BullMQ'],
-        alt: 'MomoryBox gift e-commerce platform',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCY5hO_M7IDbpAbj_SjHQ7bHccSXQACykadDVIWo4uOesggIUg1gjdSHQ7sDAf2ghF1BX6Al_my3zlBY3FNyEMgFCQWsw3ZfBuZg0OKDQqaS9sfHfhgxVgkjfMQeG2WtUM5NdrkCUNV5z67CUT-6hB0uU5CF40E2YhBkqFRcqeOCXEBDPE1t-2OvQJ1RMlaBgJpUoZAE1_cXJALOempGaLPqPshi0jVM6rBy9k-w7TMMCo5H8W2mQMKIjCBZNmYqvmarl7W7a85W0D1',
-    },
-    {
-        title: 'PMT Frontend',
-        icon: 'dashboard',
-        description: 'Multi-role project management SaaS frontend with 6 roles, ~130 routes, cookie-based JWT auth, and granular permissions.',
-        tags: ['React 19', 'Redux Toolkit', 'Vite'],
-        alt: 'Project management SaaS dashboard',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCN-mIzPPG6A1pANif6qWhmnZcd-pzKLVjfFYvyixkhJDXTDDHgfF_mDvwjghnDAkXH2OgiZc9YBn02Dm-EFcGapjnfK24dh54ke3i9rIXBrNiNN4ytB9EgxdlV9bdiZDHH_7FctqwouS8dzkXhaZEMEEa3rHnU4wkJcWJN4g8vGxhb3rPbx1IxKbcVaJSbkvp9y7ZcsprR76iBGU5Q5b2xNKwPjnLrxJGjyalRIaWJx2Yq-9so9oAIwgfQ7NIiO6lREhU7aRQa1gyd',
-    },
-    {
-        title: 'TrelloMCP',
-        icon: 'view_kanban',
-        description: 'Model Context Protocol server exposing Trello as callable tools for AI assistants like Claude Desktop.',
-        tags: ['MCP SDK', 'Node.js', 'Zod'],
-        alt: 'Trello MCP server',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPp9w2EibPpnUxzrtU6AI-UGHbX-Q5VPIoDsmhjd32xnpSl6d79YcqM9RQNVgL9VXePSyvv-dACBKqi41TMcaz9JW1YIHSeBnPE2-MxZUW7eRCT7rTAcdEMryCKvg_Y8FC-ecKc74ST-uayFC4eAjQyFwN-ZXfjznB3EY19ukWSbHQ4Z1y7447MQlXVLzocFJASN5V1fVP_YESoBqNfoWg1m0sMp4au2O0oeUmcKTvprVLzjCdTUy0U9FQkHeSvzFTYyMs5aoCBas4',
-    },
-];
+import { useContent } from '../../lib/content';
 
 const navButtonClass =
     'w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary hover:bg-primary/5 active:scale-90 transition-[color,border-color,background-color,transform] duration-200';
 
 export function Work() {
+    const { projects } = useContent().projects;
     const ref = useRef<HTMLElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const cardRefs = useRef<Array<HTMLElement | null>>([]);
@@ -102,13 +50,14 @@ export function Work() {
 
                 <div data-reveal-group className="grid lg:grid-cols-2 gap-8">
                     {projects.map((p, i) => {
+                        const href = p.links?.live;
                         const media = (
                             <>
                                 {/* Oversized so the scrubbed parallax never exposes an edge */}
                                 <div data-parallax="14" className="absolute inset-x-0 -inset-y-[12%]">
                                     <img
                                         className="w-full h-full object-cover opacity-70 transition-[transform,opacity] duration-700 ease-out group-hover:scale-105 group-hover:opacity-90"
-                                        alt={p.alt}
+                                        alt={p.imageAlt}
                                         src={p.image}
                                         loading="lazy"
                                         decoding="async"
@@ -123,15 +72,15 @@ export function Work() {
 
                         return (
                             <article
-                                key={p.title}
+                                key={p.id}
                                 ref={(el) => { cardRefs.current[i] = el; }}
                                 data-reveal-item
                                 className={`spotlight group relative bg-surface-container-high rounded-[2rem] overflow-hidden border transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-1.5 hover:shadow-[0_0_40px_rgba(129,236,255,0.12)] ${
                                     activeIndex === i ? 'border-primary/30' : 'border-outline-variant/30'
                                 }`}
                             >
-                                {p.href ? (
-                                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="h-64 relative overflow-hidden block" aria-label={`Open ${p.title} live site`}>
+                                {href ? (
+                                    <a href={href} target="_blank" rel="noopener noreferrer" className="h-64 relative overflow-hidden block" aria-label={`Open ${p.name} live site`}>
                                         {media}
                                     </a>
                                 ) : (
@@ -139,22 +88,22 @@ export function Work() {
                                 )}
                                 <div className="p-8 relative">
                                     <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-2xl font-headline font-bold text-on-background">{p.title}</h3>
+                                        <h3 className="text-2xl font-headline font-bold text-on-background">{p.name}</h3>
                                         <span className="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full transition-transform duration-300 group-hover:rotate-12" aria-hidden="true">
                                             {p.icon}
                                         </span>
                                     </div>
-                                    <p className="text-on-surface-variant font-body mb-6 text-sm md:text-base">{p.description}</p>
-                                    <ul className={`flex flex-wrap gap-2 ${p.href ? 'mb-4' : 'mb-2'}`}>
+                                    <p className="text-on-surface-variant font-body mb-6 text-sm md:text-base">{p.summary}</p>
+                                    <ul className={`flex flex-wrap gap-2 ${href ? 'mb-4' : 'mb-2'}`}>
                                         {p.tags.map((t) => (
                                             <li key={t} className="px-2 py-1 text-[11px] uppercase font-bold tracking-tight bg-primary/10 text-primary rounded">
                                                 {t}
                                             </li>
                                         ))}
                                     </ul>
-                                    {p.href && (
+                                    {href && (
                                         <a
-                                            href={p.href}
+                                            href={href}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="group/link inline-flex items-center gap-2 text-primary font-bold text-sm min-h-[44px]"

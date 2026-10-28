@@ -1,0 +1,11 @@
+{
+  "paragraphs": [
+    "My journey began as a curious CS student at **Vedas College**, where I discovered the immense power of code to bring abstract ideas to life. This academic foundation paved the way for my role as a Junior Frontend Developer at **Anand Marketing Tech**.",
+    "I found my niche in the intersection of aesthetics and logic. My true passion lies in ==bridging the gap== between intricate Figma designs and high-performance, production-ready React applications."
+  ],
+  "stats": [
+    { "value": "CS", "label": "Education" },
+    { "value": "React", "label": "Specialization" },
+    { "value": "5", "count": 5, "label": "Featured Projects" }
+  ]
+}

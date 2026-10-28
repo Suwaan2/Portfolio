@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '../lib/gsap';
+import { useContent } from '../lib/content';
 
 const links = [
     { path: "/", label: "Home" },
@@ -29,7 +30,7 @@ export function Navbar() {
     const openRef = useRef(isOpen);
     openRef.current = isOpen;
     const { pathname } = useLocation();
-    const resumeHref = `${import.meta.env.BASE_URL}Suan_KC_Resume.pdf`;
+    const resumeHref = useContent().profile.resumeUrl;
 
     // Slide away while reading (scrolling down), return on any upward scroll
     useGSAP(() => {

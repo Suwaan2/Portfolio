@@ -12,6 +12,7 @@ import { ContactPage } from './components/Contact/ContactPage';
 import { Footer } from './components/Footer';
 import { AskSuanAI } from './components/ai/AskSuanAI';
 import { Preloader } from './components/Preloader';
+import { ContentProvider } from './components/ContentProvider';
 import { ScrollTrigger } from './lib/gsap';
 import { useSpotlight } from './lib/useSpotlight';
 
@@ -23,33 +24,35 @@ function App() {
     <MotionConfig reducedMotion="user">
       <div className="bg-background min-h-screen text-on-background font-body relative overflow-x-hidden selection:bg-primary selection:text-on-primary">
         <Preloader />
-        <ScrollToTop />
-        <ScrollProgressBar />
-        <Navbar />
-        <main className="relative pt-20">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={location.pathname}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12, transition: { duration: 0.2, ease: [0.3, 0, 1, 1] } }}
-              transition={{ duration: 0.4, ease: [0.05, 0.7, 0.1, 1] }}
-              // trigger positions were measured mid-transition; re-measure once the page settles
-              onAnimationComplete={() => ScrollTrigger.refresh()}
-            >
-              <Routes location={location}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/skills" element={<Skills />} />
-                <Route path="/projects" element={<Work />} />
-                <Route path="/experience" element={<Experience />} />
-                <Route path="/contact" element={<ContactPage />} />
-              </Routes>
-            </motion.div>
-          </AnimatePresence>
-        </main>
-        <Footer />
-        <AskSuanAI />
+        <ContentProvider>
+          <ScrollToTop />
+          <ScrollProgressBar />
+          <Navbar />
+          <main className="relative pt-20">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12, transition: { duration: 0.2, ease: [0.3, 0, 1, 1] } }}
+                transition={{ duration: 0.4, ease: [0.05, 0.7, 0.1, 1] }}
+                // trigger positions were measured mid-transition; re-measure once the page settles
+                onAnimationComplete={() => ScrollTrigger.refresh()}
+              >
+                <Routes location={location}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/skills" element={<Skills />} />
+                  <Route path="/projects" element={<Work />} />
+                  <Route path="/experience" element={<Experience />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                </Routes>
+              </motion.div>
+            </AnimatePresence>
+          </main>
+          <Footer />
+          <AskSuanAI />
+        </ContentProvider>
       </div>
     </MotionConfig>
   );

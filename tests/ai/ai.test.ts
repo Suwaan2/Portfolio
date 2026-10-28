@@ -12,6 +12,9 @@ vi.mock('../../api/lib/gemini', () => ({
   getFallbackModelName: () => 'mock-fallback',
 }));
 
+// Keep tests off the real database; content falls back to data/portfolio/*.json
+vi.mock('../../server/db', () => ({ getDb: async () => null }));
+
 import handler from '../../api/ai/chat';
 import { chatRequestSchema } from '../../api/lib/validation';
 import { isRateLimited, resetRateLimits } from '../../api/lib/rate-limit';

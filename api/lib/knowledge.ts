@@ -1,6 +1,8 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sectionSchemas, SECTION_KEYS, type Content, type Project as ContentProject } from '../../shared/schema.js';
+import { stripMarkup } from '../../shared/markup.js';
 
 const API_DIR = dirname(fileURLToPath(import.meta.url));
 const CWD_DIR = join(process.cwd(), 'api', 'lib');
@@ -9,13 +11,15 @@ const DATA_DIR = [join(API_DIR, '..', '..', 'data', 'portfolio'), join(CWD_DIR, 
   (p) => existsSync(p),
 ) ?? join(API_DIR, '..', '..', 'data', 'portfolio');
 
-function loadJson<T>(filename: string): T {
-  return JSON.parse(readFileSync(join(DATA_DIR, filename), 'utf-8')) as T;
+function loadSection<K extends keyof Content>(key: K): Content[K] {
+  const raw = JSON.parse(readFileSync(join(DATA_DIR, `${key}.json`), 'utf-8'));
+  const parsed = sectionSchemas[key].safeParse(raw);
+  if (!parsed.success) throw new Error(`Invalid ${key}.json: ${parsed.error.message}`);
+  return parsed.data as Content[K];
 }
 
-function loadWrapped<T>(filename: string, key: string): T[] {
-  const data = loadJson<Record<string, T[]>>(filename);
-  return data[key] ?? [];
+export function loadContent(): Content {
+  return Object.fromEntries(SECTION_KEYS.map((k) => [k, loadSection(k)])) as Content;
 }
 
 export interface PortfolioProfile {
@@ -35,24 +39,12 @@ export interface ExperienceEntry {
   company: string;
   role: string;
   period: string;
+  tech?: string;
   responsibilities: string[];
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-  technologies: string[];
-  features: string[];
-  role: string;
-  challenges: string[];
-  links?: {
-    live?: string;
-    github?: string;
-    caseStudy?: string;
-  };
-}
+// Display-only fields (icons, images, card text) are left out of the chatbot's view
+export type Project = Omit<ContentProject, 'icon' | 'image' | 'imageAlt' | 'summary' | 'tags'>;
 
 export interface PortfolioKnowledge {
   profile: PortfolioProfile;
@@ -65,15 +57,33 @@ export interface PortfolioKnowledge {
   contact: Record<string, string>;
 }
 
-export function loadKnowledge(): PortfolioKnowledge {
+export function toKnowledge(content: Content): PortfolioKnowledge {
+  const { name, title, location, summary } = content.profile;
   return {
-    profile: loadJson<PortfolioProfile>('profile.json'),
-    education: loadWrapped<EducationEntry>('education.json', 'education'),
-    experience: loadWrapped<ExperienceEntry>('experience.json', 'experience'),
-    skills: loadJson<Record<string, string[]>>('skills.json'),
-    projects: loadWrapped<Project>('projects.json', 'projects'),
-    achievements: loadWrapped<string>('achievements.json', 'achievements'),
-    availability: loadJson<{ available: boolean; message: string }>('availability.json'),
-    contact: loadJson<Record<string, string>>('contact.json'),
+    profile: { name, title, location, summary },
+    education: content.education.education,
+    experience: content.experience.experience.map(({ highlights, ...job }) => ({
+      ...job,
+      responsibilities: highlights.map((h) => stripMarkup(h.text)),
+    })),
+    skills: Object.fromEntries(content.skills.groups.map((g) => [g.title, g.skills])),
+    projects: content.projects.projects.map((p) => ({
+      id: p.id,
+      name: p.name,
+      type: p.type,
+      description: p.description,
+      technologies: p.technologies,
+      features: p.features,
+      role: p.role,
+      challenges: p.challenges,
+      links: p.links,
+    })),
+    achievements: content.achievements.achievements,
+    availability: content.availability,
+    contact: Object.fromEntries(Object.entries(content.contact).filter((e): e is [string, string] => Boolean(e[1]))),
   };
+}
+
+export function loadKnowledge(): PortfolioKnowledge {
+  return toKnowledge(loadContent());
 }
