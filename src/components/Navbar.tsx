@@ -63,8 +63,9 @@ export function Navbar() {
     return (
         <nav
             ref={navRef}
+            data-site-nav
             className={`fixed top-0 w-full z-50 backdrop-blur-xl border-b focus-within:![transform:none] transition-[background-color,border-color] duration-300 ${
-                scrolled || isOpen ? 'bg-neutral-950/75 border-outline-variant/20' : 'bg-neutral-900/30 border-transparent'
+                scrolled || isOpen ? 'bg-nav-surface/75 border-outline-variant/20' : 'bg-nav-surface-idle/30 border-transparent'
             }`}
         >
             <div className="flex justify-between items-center max-w-7xl mx-auto px-4 md:px-8 h-20">
@@ -91,7 +92,7 @@ export function Navbar() {
                                 {active && (
                                     <motion.span
                                         layoutId="nav-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary shadow-[0_0_12px_rgba(129,236,255,0.8)]"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary shadow-[0_0_12px_rgb(var(--c-primary)/0.8)]"
                                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                                     />
                                 )}
@@ -103,7 +104,7 @@ export function Navbar() {
                 <div className="hidden md:block">
                     <a
                         {...resumeLink}
-                        className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-bold px-5 py-2.5 rounded-xl hover:shadow-[0_0_24px_rgba(129,236,255,0.35)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-[box-shadow,transform] duration-200"
+                        className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-bold px-5 py-2.5 rounded-xl hover:shadow-[0_0_24px_rgb(var(--c-primary)/0.35)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-[box-shadow,transform] duration-200"
                     >
                         <span className="material-symbols-outlined text-lg" aria-hidden="true">download</span>
                         Resume

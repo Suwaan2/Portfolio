@@ -1,0 +1,191 @@
+/*
+ * Theme tokens (space-separated RGB so Tailwind can apply opacity).
+ *
+ * Set on <html>:
+ *   data-palette="sunset"   pink / orange on deep purple (default palette is cyan)
+ *   data-mode="light"       light surfaces (default mode is dark)
+ *
+ * Set on any element:
+ *   data-theme-scope="dark" keeps that element in the dark version of the current
+ *                           palette even in light mode. Used for photos and cover
+ *                           art, which are designed to sit on a dark backing.
+ *
+ * Set on <html> by a full-bleed photo section while the navbar sits over it:
+ *   data-nav-over-media="true"  dark-scopes the site navbar, so its links stay
+ *                               light over the photo in every theme.
+ *
+ * The alternative themes only override the tokens the site actually uses.
+ */
+
+/* Cyan · dark (the original site colours) */
+:root,
+[data-theme-scope='dark'],
+html[data-nav-over-media='true'] nav[data-site-nav] {
+  /* Default palette: cyan on near-black (the original site colours) */
+  --c-background: 14 14 14; /* #0e0e0e */
+  --c-error: 255 113 108; /* #ff716c */
+  --c-error-container: 159 5 25; /* #9f0519 */
+  --c-error-dim: 215 56 59; /* #d7383b */
+  --c-inverse-on-surface: 86 85 85; /* #565555 */
+  --c-inverse-primary: 0 105 118; /* #006976 */
+  --c-inverse-surface: 252 249 248; /* #fcf9f8 */
+  --c-on-background: 255 255 255; /* #ffffff */
+  --c-on-error: 73 0 6; /* #490006 */
+  --c-on-error-container: 255 168 163; /* #ffa8a3 */
+  --c-on-primary: 0 87 98; /* #005762 */
+  --c-on-primary-container: 0 77 87; /* #004d57 */
+  --c-on-primary-fixed: 0 56 64; /* #003840 */
+  --c-on-primary-fixed-variant: 0 87 98; /* #005762 */
+  --c-on-secondary: 64 85 95; /* #40555f */
+  --c-on-secondary-container: 189 212 224; /* #bdd4e0 */
+  --c-on-secondary-fixed: 45 66 76; /* #2d424c */
+  --c-on-secondary-fixed-variant: 73 95 105; /* #495f69 */
+  --c-on-surface: 255 255 255; /* #ffffff */
+  --c-on-surface-variant: 173 170 170; /* #adaaaa */
+  --c-on-tertiary: 0 42 85; /* #002a55 */
+  --c-on-tertiary-container: 0 29 63; /* #001d3f */
+  --c-on-tertiary-fixed: 0 24 53; /* #001835 */
+  --c-on-tertiary-fixed-variant: 0 57 113; /* #003971 */
+  --c-outline: 118 117 117; /* #767575 */
+  --c-outline-variant: 72 72 71; /* #484847 */
+  --c-primary: 129 236 255; /* #81ecff */
+  --c-primary-container: 0 227 253; /* #00e3fd */
+  --c-primary-dim: 0 212 236; /* #00d4ec */
+  --c-primary-fixed: 0 227 253; /* #00e3fd */
+  --c-primary-fixed-dim: 0 212 236; /* #00d4ec */
+  --c-secondary: 207 230 242; /* #cfe6f2 */
+  --c-secondary-container: 53 74 83; /* #354a53 */
+  --c-secondary-dim: 193 216 228; /* #c1d8e4 */
+  --c-secondary-fixed: 207 230 242; /* #cfe6f2 */
+  --c-secondary-fixed-dim: 193 216 228; /* #c1d8e4 */
+  --c-surface: 14 14 14; /* #0e0e0e */
+  --c-surface-bright: 48 49 52; /* #303134 */
+  --c-surface-container: 28 29 31; /* #1c1d1f */
+  --c-surface-container-high: 35 36 39; /* #232427 */
+  --c-surface-container-highest: 42 43 46; /* #2a2b2e */
+  --c-surface-container-low: 20 21 23; /* #141517 */
+  --c-surface-container-lowest: 0 0 0; /* #000000 */
+  --c-surface-dim: 14 14 14; /* #0e0e0e */
+  --c-surface-tint: 129 236 255; /* #81ecff */
+  --c-surface-variant: 42 43 46; /* #2a2b2e */
+  --c-tertiary: 112 170 255; /* #70aaff */
+  --c-tertiary-container: 89 156 249; /* #599cf9 */
+  --c-tertiary-dim: 92 159 252; /* #5c9ffc */
+  --c-tertiary-fixed: 128 178 255; /* #80b2ff */
+  --c-tertiary-fixed-dim: 101 164 255; /* #65a4ff */
+  --c-nav-surface: 10 10 10; /* navbar once scrolled */
+  --c-nav-surface-idle: 23 23 23; /* navbar at the top of the page */
+}
+
+html {
+  color-scheme: dark;
+}
+html[data-mode='light'] {
+  color-scheme: light;
+  /* Glass panels need to be more solid on light, or dark imagery shows through */
+  --glass-alpha: 0.88;
+}
+[data-theme-scope='dark'],
+html[data-nav-over-media='true'] nav[data-site-nav] {
+  color-scheme: dark;
+  --glass-alpha: 0.55;
+  color: rgb(var(--c-on-background));
+}
+
+/* Cyan · light */
+html[data-mode='light'] {
+  --c-background: 241 242 238;
+  --c-surface: 241 242 238;
+  --c-surface-dim: 241 242 238;
+  --c-surface-container-lowest: 249 249 246;
+  --c-surface-container-low: 233 235 230;
+  --c-surface-container: 227 230 224;
+  --c-surface-container-high: 249 249 246;
+  --c-surface-container-highest: 215 220 213;
+  --c-surface-variant: 215 220 213;
+  --c-on-background: 22 27 28;
+  --c-on-surface: 22 27 28;
+  --c-on-surface-variant: 74 87 98;
+  --c-outline: 110 122 132;
+  --c-outline-variant: 196 202 195;
+  --c-primary: 0 122 143;
+  --c-primary-dim: 0 99 117;
+  --c-on-primary: 255 255 255;
+  --c-tertiary: 30 100 200;
+  --c-error: 186 26 42;
+  --c-nav-surface: 246 247 243;
+  --c-nav-surface-idle: 246 247 243;
+}
+
+/* Sunset · dark */
+html[data-palette='sunset'],
+html[data-palette='sunset'] [data-theme-scope='dark'],
+html[data-palette='sunset'][data-nav-over-media='true'] nav[data-site-nav] {
+  --c-background: 16 10 24;
+  --c-surface: 16 10 24;
+  --c-surface-dim: 16 10 24;
+  --c-surface-container-lowest: 8 4 14;
+  --c-surface-container-low: 24 15 34;
+  --c-surface-container: 31 20 43;
+  --c-surface-container-high: 39 26 53;
+  --c-surface-container-highest: 49 34 66;
+  --c-surface-variant: 49 34 66;
+  --c-on-background: 255 255 255;
+  --c-on-surface: 255 255 255;
+  --c-on-surface-variant: 190 176 200;
+  --c-outline: 130 112 146;
+  --c-outline-variant: 80 62 96;
+  --c-primary: 255 122 182;
+  --c-primary-dim: 255 78 138;
+  --c-on-primary: 74 5 40;
+  --c-tertiary: 255 176 87;
+  --c-error: 255 113 108;
+  --c-nav-surface: 12 7 18;
+  --c-nav-surface-idle: 24 15 34;
+}
+
+/*
+ * Imagery in the sunset palette: the hero photo and project cover art are cyan/teal,
+ * which fights the pink. Rotating the hue turns the cyan highlights pink while keeping
+ * their brightness; a soft warm wash from the corner adds the palette's orange.
+ * (data-tint-media sits on dark-scoped media containers.)
+ */
+html[data-palette='sunset'] [data-tint-media] img {
+  filter: hue-rotate(142deg) saturate(1.15);
+}
+html[data-palette='sunset'] [data-tint-media] {
+  isolation: isolate;
+}
+html[data-palette='sunset'] [data-tint-media]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 35%, rgb(var(--c-tertiary) / 0.55));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Sunset · light */
+html[data-palette='sunset'][data-mode='light'] {
+  --c-background: 249 240 232;
+  --c-surface: 249 240 232;
+  --c-surface-dim: 249 240 232;
+  --c-surface-container-lowest: 253 247 241;
+  --c-surface-container-low: 244 230 220;
+  --c-surface-container: 239 223 212;
+  --c-surface-container-high: 253 247 241;
+  --c-surface-container-highest: 233 211 199;
+  --c-surface-variant: 233 211 199;
+  --c-on-background: 36 16 30;
+  --c-on-surface: 36 16 30;
+  --c-on-surface-variant: 108 80 94;
+  --c-outline: 150 120 128;
+  --c-outline-variant: 222 194 183;
+  --c-primary: 204 31 107;
+  --c-primary-dim: 168 20 88;
+  --c-on-primary: 255 255 255;
+  --c-tertiary: 214 84 10;
+  --c-error: 186 26 42;
+  --c-nav-surface: 252 245 238;
+  --c-nav-surface-idle: 252 245 238;
+}

@@ -13,6 +13,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   </head>
   <body class="selection:bg-primary selection:text-on-primary">
+    <script>
+      // Apply the saved theme before first paint so light-mode visitors don't see a dark flash.
+      // Mirrors ThemeSettings (src/components/ThemeSettings.tsx); /admin always uses the default.
+      try {
+        if (!location.pathname.startsWith('/admin')) {
+          var t = JSON.parse(localStorage.getItem('theme') || 'null') || {};
+          if (t.palette === 'sunset') document.documentElement.setAttribute('data-palette', 'sunset');
+          if (t.mode === 'light') document.documentElement.setAttribute('data-mode', 'light');
+        }
+      } catch (e) {}
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -126,7 +126,7 @@ export function AskSuanAI() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
             aria-label="Open Ask Suan's AI"
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary px-5 py-3 font-bold shadow-[0_0_30px_rgba(129,236,255,0.3)]"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary px-5 py-3 font-bold shadow-[0_0_30px_rgb(var(--c-primary)/0.3)]"
           >
             <Sparkles size={18} />
             <span className="font-label text-sm">Ask Suan's AI</span>

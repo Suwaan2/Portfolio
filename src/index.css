@@ -1,3 +1,5 @@
+@import "./theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,17 +33,17 @@
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
   .glow-overlay {
-    background: radial-gradient(circle at 50% 50%, rgba(129, 236, 255, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle at 50% 50%, rgb(var(--c-primary) / 0.05) 0%, transparent 70%);
   }
   .glass-card {
-    background: rgba(35, 36, 39, 0.55);
+    background: rgb(var(--c-surface-container-high) / var(--glass-alpha, 0.55));
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgb(var(--c-on-surface) / 0.07);
   }
 
   /* Faint cyan wash behind a section heading so mid-page sections aren't flat black */
   .section-glow {
-    background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(129, 236, 255, 0.04), transparent 70%);
+    background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgb(var(--c-primary) / 0.04), transparent 70%);
   }
 
   /* Cursor-following glow; --mx/--my are fed by useSpotlight */
@@ -55,7 +57,7 @@
     inset: 0;
     z-index: -1;
     border-radius: inherit;
-    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(129, 236, 255, 0.09), transparent 60%);
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--c-primary) / 0.09), transparent 60%);
     opacity: 0;
     transition: opacity 250ms ease-out;
     pointer-events: none;
@@ -67,8 +69,8 @@
   /* Fine HUD grid that fades out toward the edges */
   .hud-grid {
     background-image:
-      linear-gradient(to right, rgba(129, 236, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(129, 236, 255, 0.06) 1px, transparent 1px);
+      linear-gradient(to right, rgb(var(--c-primary) / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--c-primary) / 0.06) 1px, transparent 1px);
     background-size: 64px 64px;
     mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);

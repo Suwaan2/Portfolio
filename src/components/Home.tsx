@@ -1,35 +1,35 @@
+import { NameReveal } from './NameReveal';
+import { SectionReveal } from './SectionReveal';
 import { Hero } from './Hero';
 import { About } from './About';
 import { Skills } from './Skills';
-import { Work } from './Work';
+import { WorkGallery } from './Work/WorkGallery';
 import { Experience } from './Experience';
 import { Contact } from './Contact';
 
 export function Home() {
     return (
-        <div className="flex flex-col gap-10">
-            <Hero />
-            
-            {/* Quick summaries of the other sections */}
-            <div className="border-t border-outline-variant/20">
-                <About />
-            </div>
-            
-            <div className="border-t border-outline-variant/20">
-                <Skills />
-            </div>
-            
-            <div className="border-t border-outline-variant/20">
-                <Work />
-            </div>
+        <div className="flex flex-col">
+            {/* Scroll-driven name mask; the hero's entrance waits until it is scrolled into view */}
+            <NameReveal />
+            <Hero introOn="scroll" />
 
-            <div className="border-t border-outline-variant/20">
+            <SectionReveal>
+                <About textReveal="scrub" />
+            </SectionReveal>
+            <SectionReveal>
+                <Skills />
+            </SectionReveal>
+
+            {/* Pins itself, so it can't sit inside SectionReveal's transforms */}
+            <WorkGallery />
+
+            <SectionReveal>
                 <Experience />
-            </div>
-            
-            <div className="border-t border-outline-variant/20">
+            </SectionReveal>
+            <SectionReveal>
                 <Contact />
-            </div>
+            </SectionReveal>
         </div>
     );
 }

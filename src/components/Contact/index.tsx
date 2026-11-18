@@ -36,7 +36,7 @@ export function Contact() {
                         <span ref={primary} className="block sm:inline-block">
                             <Link
                                 to="/contact"
-                                className="flex items-center justify-center h-14 md:h-16 px-8 md:px-10 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgba(129,236,255,0.35)] active:scale-[0.97] transition-[box-shadow,transform] duration-200"
+                                className="flex items-center justify-center h-14 md:h-16 px-8 md:px-10 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgb(var(--c-primary)/0.35)] active:scale-[0.97] transition-[box-shadow,transform] duration-200"
                             >
                                 Get In Touch
                             </Link>

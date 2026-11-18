@@ -1,12 +1,20 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { gsap, SplitText, useGSAP, EASE, DUR, MOTION_OK } from '../lib/gsap';
+import { gsap, ScrollTrigger, SplitText, useGSAP, EASE, DUR, MOTION_OK } from '../lib/gsap';
 import { onIntroDone } from '../lib/intro';
 import { useMagnetic } from '../lib/useMagnetic';
 import { useContent } from '../lib/content';
 import { RichText } from './RichText';
 
-export function Hero() {
+type HeroProps = {
+    /**
+     * When the entrance plays: as soon as the preloader leaves (default, hero is the first
+     * thing on screen) or when the hero scrolls into view (something else sits above it).
+     */
+    introOn?: 'preloader' | 'scroll';
+};
+
+export function Hero({ introOn = 'preloader' }: HeroProps = {}) {
     const { hero, availability, contact } = useContent();
     const heroRef = useRef<HTMLElement>(null);
     const socials = [
@@ -40,7 +48,12 @@ export function Hero() {
                 // matchMedia context, and wrapping it in the outer contextSafe nests the two
                 // contexts into a cycle (infinite recursion in Context.getTweens).
                 // play() creates no tweens, and unsubscribe stops late calls after unmount.
-                const unsubscribe = onIntroDone(() => tl.play());
+                let unsubscribe = () => {};
+                if (introOn === 'scroll') {
+                    ScrollTrigger.create({ trigger: heroRef.current, start: 'top 65%', once: true, onEnter: () => tl.play() });
+                } else {
+                    unsubscribe = onIntroDone(() => tl.play());
+                }
 
                 // Scroll exit: copy drifts up and fades, visual moves slower (depth)
                 const exit = { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true };
@@ -87,7 +100,7 @@ export function Hero() {
                 };
             });
         },
-        { scope: heroRef },
+        { scope: heroRef, dependencies: [introOn] },
     );
 
     return (
@@ -137,7 +150,7 @@ export function Hero() {
                         <span ref={primaryCta} className="inline-block">
                             <Link
                                 to="/projects"
-                                className="group bg-gradient-to-br from-primary to-primary-dim text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-[0_0_0_rgba(129,236,255,0)] hover:shadow-[0_10px_40px_-10px_rgba(129,236,255,0.6)] active:scale-[0.97] transition-[box-shadow,transform] duration-200"
+                                className="group bg-gradient-to-br from-primary to-primary-dim text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 shadow-[0_0_0_rgb(var(--c-primary)/0)] hover:shadow-[0_10px_40px_-10px_rgb(var(--c-primary)/0.6)] active:scale-[0.97] transition-[box-shadow,transform] duration-200"
                             >
                                 View My Work
                                 <span className="material-symbols-outlined transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">arrow_forward</span>
@@ -163,7 +176,7 @@ export function Hero() {
                 </div>
 
                 <div data-hero-tilt className="hidden lg:block relative will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
-                    <div data-hero-visual className="aspect-square rounded-[2rem] overflow-hidden bg-surface-container-low border border-outline-variant/20 relative">
+                    <div data-hero-visual data-theme-scope="dark" data-tint-media className="aspect-square rounded-[2rem] overflow-hidden bg-surface-container-low border border-outline-variant/20 relative">
                         <img
                             data-hero-img
                             className="w-full h-full object-cover opacity-60"

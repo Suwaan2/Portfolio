@@ -27,7 +27,7 @@ export function Experience() {
                     <div className="absolute left-5 top-0 bottom-0 hidden md:block" aria-hidden="true">
                         <div className="absolute inset-y-0 left-0 w-px bg-outline-variant/30" />
                         <div data-line="y" className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-primary via-primary/60 to-transparent" />
-                        <span className="absolute -left-[5px] top-12 h-[11px] w-[11px] rounded-full bg-primary shadow-[0_0_0_4px_rgba(129,236,255,0.15),0_0_20px_rgba(129,236,255,0.6)]" />
+                        <span className="absolute -left-[5px] top-12 h-[11px] w-[11px] rounded-full bg-primary shadow-[0_0_0_4px_rgb(var(--c-primary)/0.15),0_0_20px_rgb(var(--c-primary)/0.6)]" />
                     </div>
 
                     <div className="space-y-8">

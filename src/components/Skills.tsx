@@ -27,7 +27,7 @@ export function Skills() {
                         <div
                             key={g.title}
                             data-reveal-item
-                            className="spotlight group glass-card p-8 rounded-xl border-t-2 border-t-primary/30 transition-[border-color,transform,box-shadow] duration-300 hover:border-t-primary hover:-translate-y-2 hover:shadow-[0_24px_60px_-30px_rgba(129,236,255,0.35)]"
+                            className="spotlight group glass-card p-8 rounded-xl border-t-2 border-t-primary/30 transition-[border-color,transform,box-shadow] duration-300 hover:border-t-primary hover:-translate-y-2 hover:shadow-[0_24px_60px_-30px_rgb(var(--c-primary)/0.35)]"
                         >
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center gap-3">

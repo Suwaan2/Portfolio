@@ -108,7 +108,7 @@ export function ContactPage() {
                         <button
                             type="submit"
                             disabled={status === 'sending'}
-                            className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgba(129,236,255,0.3)] hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] transition-[box-shadow,transform] duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                            className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary text-on-primary font-bold rounded-xl hover:shadow-[0_0_30px_rgb(var(--c-primary)/0.3)] hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] transition-[box-shadow,transform] duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
                         >
                             {status === 'sending' && (
                                 <span className="h-4 w-4 rounded-full border-2 border-on-primary/30 border-t-on-primary animate-spin" aria-hidden="true" />

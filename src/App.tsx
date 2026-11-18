@@ -12,6 +12,7 @@ import { ContactPage } from './components/Contact/ContactPage';
 import { Footer } from './components/Footer';
 import { AskSuanAI } from './components/ai/AskSuanAI';
 import { Preloader } from './components/Preloader';
+import { ThemeSettings } from './components/ThemeSettings';
 import { ContentProvider } from './components/ContentProvider';
 import { ScrollTrigger } from './lib/gsap';
 import { useSpotlight } from './lib/useSpotlight';
@@ -52,6 +53,7 @@ function App() {
           </main>
           <Footer />
           <AskSuanAI />
+          <ThemeSettings />
         </ContentProvider>
       </div>
     </MotionConfig>
