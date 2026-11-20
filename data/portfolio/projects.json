@@ -1,6 +1,42 @@
 {
   "projects": [
     {
+      "id": "1pageshop",
+      "name": "1PageShop",
+      "type": "Multi-Tenant E-Commerce Marketplace",
+      "icon": "storefront",
+      "summary": "Multi-tenant e-commerce platform where Nepali sellers launch their own one-page shop in minutes, listed together in a shared marketplace.",
+      "description": "Multi-tenant e-commerce platform for Nepal where every seller gets their own one-page storefront and seller dashboard, and all shops appear in a searchable marketplace. I built the React + Vite frontend (storefronts, marketplace, onboarding and the seller dashboard) against a Django REST backend with PostgreSQL.",
+      "technologies": [
+        "React",
+        "Vite",
+        "Redux Toolkit",
+        "Django",
+        "PostgreSQL",
+        "Prisma"
+      ],
+      "features": [
+        "Multi-tenant architecture: one storefront and dashboard per seller",
+        "Public marketplace for browsing and searching every shop",
+        "Social-media-style product upload so sellers go live in about 5 minutes",
+        "Seller dashboard for inventory and order management",
+        "Subscription plans, from a Rs 10 trial to custom multi-shop plans",
+        "Mobile-first, responsive UI for buyers and sellers"
+      ],
+      "role": "Frontend development",
+      "challenges": [],
+      "links": {
+        "live": "https://www.1pageshop.com/"
+      },
+      "tags": [
+        "Multi-tenant",
+        "React",
+        "Redux Toolkit"
+      ],
+      "image": "/projects/1pageshop.svg",
+      "imageAlt": "1PageShop marketplace listing seller shops beside a phone showing one seller's one-page storefront and a new-order notification"
+    },
+    {
       "id": "vault",
       "name": "Vault",
       "type": "Personal Video/Bookmark Library Platform",
